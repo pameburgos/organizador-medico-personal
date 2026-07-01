@@ -1,0 +1,375 @@
+/* base de pagina */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0faf4;
+}
+
+/* barra lateral */
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #2d6a4f;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: #69d97170;
+    color: #1b4332;
+}
+
+/* animacion reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* leyenda */
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.dot-futura    { background: #52b788; }
+.dot-realizada { background: #95d5b2; }
+.dot-hoy       { background: #74c69d; }
+.dot-cancelada { background: #d1d5db; }
+
+/* calendario mensual */
+.cal-box {
+    background: white;
+    border: 1px solid #b7e4c7;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    cursor: default;
+    transition: box-shadow 0.2s;
+}
+
+.cal-box:hover {
+    box-shadow: 0 4px 18px rgba(82, 183, 136, 0.18);
+}
+
+.cal-mes-titulo {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1b4332;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+}
+
+/* cabecera días de semana */
+.cal-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 4px;
+}
+
+.cal-semana span {
+    font-size: 10px;
+    color: #2d6a4f;
+    text-align: center;
+    font-weight: 600;
+    padding: 2px 0;
+}
+
+/* cuadrícula de días */
+.cal-dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+}
+
+.cal-dia {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #6b7280;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    user-select: none;
+}
+
+.cal-dia:hover:not(.cal-vacio) {
+    background: #d8f3dc;
+    color: #1b4332;
+}
+
+.cal-vacio { cursor: default; }
+
+/* día de hoy */
+.cal-dia.hoy {
+    background: #d8f3dc;
+    color: #1b4332;
+    font-weight: 700;
+    border: 1.5px solid #74c69d;
+}
+
+/* día con consulta próxima */
+.cal-dia.futura {
+    background: #52b788;
+    color: white;
+    font-weight: 600;
+}
+
+/* día con consulta realizada */
+.cal-dia.realizada {
+    background: #95d5b2;
+    color: #1b4332;
+    font-weight: 600;
+}
+
+/* día con ambos tipos */
+.cal-dia.mixta {
+    background: linear-gradient(135deg, #52b788 50%, #95d5b2 50%);
+    color: white;
+    font-weight: 600;
+}
+
+/* día cancelada */
+.cal-dia.cancelada {
+    background: #e5e7eb;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* badge de cantidad */
+.cal-dia.futura::after,
+.cal-dia.realizada::after,
+.cal-dia.mixta::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #1b4332;
+    color: white;
+    font-size: 8px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* filtros de lista */
+.filtro-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #b7e4c7;
+    color: #6b7280;
+    background: white;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filtro-btn:hover {
+    background: #d8f3dc;
+    color: #1b4332;
+    border-color: #95d5b2;
+}
+
+.filtro-btn.active {
+    background: #52b788;
+    color: white;
+    border-color: #52b788;
+}
+
+/* tabla de consultas */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tbody tr {
+    border-bottom: 1px solid #d8f3dc;
+    transition: background 0.1s;
+}
+
+tbody tr:hover {
+    background: #f0faf4;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    padding: 10px 6px;
+    vertical-align: middle;
+}
+
+/* badge de estado */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.badge-futura {
+    background: #d8f3dc;
+    color: #1b4332;
+}
+
+.badge-realizada {
+    background: #b7e4c7;
+    color: #1b4332;
+}
+
+.badge-cancelada {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+/* botones de acción en tabla */
+.btn-accion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    color: #d1d5db;
+    transition: background 0.12s, color 0.12s;
+    font-size: 15px;
+}
+
+.btn-accion:hover {
+    background: #d8f3dc;
+    color: #1b4332;
+}
+
+.btn-accion.eliminar:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* botones globales */
+.btn-primary {
+    background: #52b788;
+    color: white;
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background: #40916c;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    border: 1px solid #b7e4c7;
+    padding: 9px 16px;
+    border-radius: 10px;
+    background: white;
+    color: #6b7280;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+}
+
+.btn-secondary:hover {
+    background: #d8f3dc;
+    color: #1b4332;
+}
+
+/* modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background: white;
+    padding: 28px;
+    border-radius: 1.25rem;
+    width: 420px;
+    max-width: calc(100vw - 32px);
+    box-shadow: 0 20px 60px rgba(82, 183, 136, 0.18);
+    animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(16px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* campos de formulario */
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+}
+
+.campo-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2d6a4f;
+}
+
+.campo-input {
+    width: 100%;
+    border: 1px solid #b7e4c7;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #374151;
+    background: #f0faf4;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: 'Inter', sans-serif;
+    resize: none;
+}
+
+.campo-input:focus {
+    border-color: #52b788;
+    box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.18);
+}
+
+select.campo-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2352b788' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+}

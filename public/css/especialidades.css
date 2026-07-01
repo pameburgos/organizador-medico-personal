@@ -1,0 +1,359 @@
+    /*---base de toda la pagina---*/
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #FFF8F5;
+    }
+
+    /*---barra lateral izquierda---*/
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #72243E;
+        text-decoration: none;
+        transition: background 0.15s;
+    }
+
+    /*cuando pasa el mouse encima*/
+    .nav-link:hover,
+    .nav-link.active {
+        background-color: #a84fce72;
+        color: #72243e;
+    }
+
+    /* --- Animación de Reveal --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.reveal-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+
+    /*---card---*/
+    .esp-card {
+        background: #70e7b922;
+        border: 1px solid #fbb6ce;
+        /* pink-300 */
+        border-radius: 1rem;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: box-shadow 0.2s, transform 0.2s;
+        cursor: pointer;
+    }
+
+    .esp-card:hover {
+        box-shadow: 0 4px 16px rgba(244, 114, 182, 0.18);
+        transform: translateY(-2px);
+    }
+
+    /*---badge de estado---*/
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 99px;
+    }
+
+    .badge-activa {
+        background: #fce7f3;
+        color: #9d174d;
+    }
+
+    .badge-pendiente {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+
+    .badge-inactiva {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    /*---modal---*/
+    #modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(114, 36, 62, 0.18);
+        z-index: 50;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #modal-overlay.activo {
+        display: flex;
+    }
+
+    #modal-box {
+        background: #fff;
+        border-radius: 1.25rem;
+        padding: 2rem;
+        width: min(90%, 440px);
+        box-shadow: 0 8px 32px rgba(114, 36, 62, 0.14);
+        position: relative;
+    }
+
+    /*---imputs---*/
+    .form-input {
+        width: 100%;
+        border: 1px solid #fbb6ce;
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 14px;
+        background: #FFF8F5;
+        color: #72243e;
+        outline: none;
+        transition: border-color 0.15s;
+    }
+
+    .form-input:focus {
+        border-color: #e572f4;
+    }
+
+    /*---botones---*/
+    .btn-primary {
+        background: #ae2bef;
+        color: #fff;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .btn-primary:hover {
+        background: #ec4899;
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: #9d174d;
+        border: 1px solid #fbb6ce;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .btn-ghost:hover {
+        background: #fce7f3;
+    }
+
+    /*---busqueda---*/
+    .search-wrap {
+        position: relative;
+    }
+
+    .search-wrap i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #f9a8d4;
+        font-size: 16px;
+    }
+
+    .search-wrap input {
+        padding-left: 2rem;
+    }
+
+    /*---empty state---*/
+    #empty-state {
+        display: none;
+    }
+
+
+    /*colores de tarjetita de especialidades*/
+
+    /* Dermatología */
+    .pastel-rosa {
+        background: #b6365e;
+        border: 2px solid #ec7aa0;
+    }
+
+    /* Oftalmología */
+    .pastel-durazno {
+        background: #fff5eb;
+        border: 2px solid #f7c59f;
+    }
+
+    /* Cardiología */
+    .pastel-verde {
+        background: #eef9ee;
+        border: 2px solid #a8d8a8;
+    }
+
+    /* Neurología */
+    .pastel-lila {
+        background: #f5f0ff;
+        border: 2px solid #d4b5ff;
+    }
+
+    /* Neumología */
+    .pastel-celeste {
+        background: #eef6ff;
+        border: 2px solid #b8d6ff;
+    }
+
+    /* Gastroenterología */
+    .pastel-turquesa {
+        background: #eefcfc;
+        border: 2px solid #aee6e6;
+    }
+
+    /* Pediatría */
+    .pastel-amarillo {
+        background: #fffde8;
+        border: 2px solid #f7e7a1;
+    }
+
+    /* Ginecología */
+    .pastel-lavanda {
+        background: #faf0ff;
+        border: 2px solid #dcb6ff;
+    }
+
+    /*colores de titulos e iconos*/
+    .pastel-rosa .titulo-especialidad,
+    .pastel-rosa i {
+        color: #d85d8f;
+    }
+
+    .pastel-durazno .titulo-especialidad,
+    .pastel-durazno i {
+        color: #e68a3f;
+    }
+
+    .pastel-verde .titulo-especialidad,
+    .pastel-verde i {
+        color: #4f9b4f;
+    }
+
+    .pastel-lila .titulo-especialidad,
+    .pastel-lila i {
+        color: #9b5de5;
+    }
+
+    .pastel-celeste .titulo-especialidad,
+    .pastel-celeste i {
+        color: #4d7cff;
+    }
+
+    .pastel-turquesa .titulo-especialidad,
+    .pastel-turquesa i {
+        color: #2d9da8;
+    }
+
+    .pastel-amarillo .titulo-especialidad,
+    .pastel-amarillo i {
+        color: #c8a600;
+    }
+
+    .pastel-lavanda .titulo-especialidad,
+    .pastel-lavanda i {
+        color: #a45ee5;
+    }
+
+    /*colores de tarjetita de especialidades : */ 
+    /*rosa*/
+    .pastel-rosa {
+        background: #fae0eaec;
+        border: 1px solid #f7b6cf;
+    }
+
+    .pastel-rosa .titulo-especialidad,
+    .pastel-rosa .icono-especialidad {
+        color: #d85d8f;
+    }
+
+    /*durazno*/
+    .pastel-durazno {
+        background: #fcead7dd;
+        border: 1px solid #f5c08c;
+    }
+
+    .pastel-durazno .titulo-especialidad,
+    .pastel-durazno .icono-especialidad {
+        color: #e28a3f;
+    }
+
+    /*verde*/
+    .pastel-verde {
+        background: #ddf6dddd;
+        border: 1px solid #b6ddb6;
+    }
+
+    .pastel-verde .titulo-especialidad,
+    .pastel-verde .icono-especialidad {
+        color: #4c9a4c;
+    }
+
+    /*lila*/
+    .pastel-lila {
+        background: #ece3fb;
+        border: 1px solid #d8c0ff;
+    }
+
+    .pastel-lila .titulo-especialidad,
+    .pastel-lila .icono-especialidad {
+        color: #9b5de5;
+    }
+
+    /*celeste*/
+    .pastel-celeste {
+        background: #d7e5f6c9;
+        border: 1px solid #bfd8ff;
+    }
+
+    .pastel-celeste .titulo-especialidad,
+    .pastel-celeste .icono-especialidad {
+        color: #5c8cff;
+    }
+
+    /*turquesa*/
+    .pastel-turquesa {
+        background: #d5f5f5e1;
+        border: 1px solid #b7e8e8;
+    }
+
+    .pastel-turquesa .titulo-especialidad,
+    .pastel-turquesa .icono-especialidad {
+        color: #2a9da7;
+    }
+
+    /*amarillo*/
+    .pastel-amarillo {
+        background: #f7f4d7;
+        border: 1px solid #f5e6a0;
+    }
+
+    .pastel-amarillo .titulo-especialidad,
+    .pastel-amarillo .icono-especialidad {
+        color: #c5a000;
+    }
+
+    /*lavanda*/
+    .pastel-lavanda {
+        background: #faf3ff;
+        border: 1px solid #dfc1ff;
+    }
+
+    .pastel-lavanda .titulo-especialidad,
+    .pastel-lavanda .icono-especialidad {
+        color: #aa66dd;
+    }

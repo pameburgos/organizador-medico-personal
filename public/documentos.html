@@ -1,0 +1,320 @@
+<!doctype html>
+<!--! + tab-->
+<html lang="es">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organizador - Documentos</title>
+
+    <!--tailwind-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--iconos-->
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <!--mi css-->
+    <link rel="stylesheet" href="/css/documentos.css" />
+    </head>
+
+    <body class="min-h-screen">
+    <div class="flex min-h-screen">
+    <!--barra lateral-->
+    <aside
+        class="w-48 flex-shrink-0 bg-red-100 border-r border-red-200 flex flex-col py-6"
+    >
+        <div class="px-5 pb-5 mb-4 border-b border-red-200">
+        <h1 class="text-base font-semibold text-pink-700">Organizador</h1>
+        </div>
+
+        <nav class="flex flex-col gap-1">
+        <a href="dashboard.html" class="nav-link">
+            <i class="ti ti-layout-dashboard"></i>
+            General
+        </a>
+
+        <a href="especialidades.html" class="nav-link">
+            <i class="ti ti-stethoscope"></i>
+            Especialidades
+        </a>
+
+        <a href="consultas.html" class="nav-link">
+            <i class="ti ti-calendar-event"></i>
+            Consultas
+        </a>
+
+        <a href="documentos.html" class="nav-link active">
+            <i class="ti ti-file-description"></i>
+            Documentos
+        </a>
+
+        <a href="medicamentos.html" class="nav-link">
+            <i class="ti ti-pill"></i>
+            Medicamentos
+        </a>
+
+        <a href="alertas.html" class="nav-link">
+            <i class="ti ti-bell"></i>
+            Alertas
+        </a>
+        </nav>
+    </aside>
+
+    <!--contenido principal-->
+    <div class="flex-1 flex flex-col">
+        <!--barra superior o topbar-->
+        <div
+        class="bg-red-100 border-b border-red-200 px-6 py-4 flex items-center justify-between"
+        >
+        <div>
+            <h2 class="text-lg font-semibold text-pink-800">Pamela Burgos</h2>
+            <span class="text-sm text-pink-500"
+            >Organizador Médico Personal</span
+            >
+        </div>
+        <i class="ti ti-heart text-pink-400 text-xl"></i>
+        </div>
+
+        <main class="p-6 flex flex-col gap-6">
+        <!--encabezado de seccion-->
+        <div class="reveal flex items-center justify-between">
+            <div>
+            <h2
+                class="text-base font-semibold text-teal-800 flex items-center gap-2"
+            >
+                <i class="ti ti-file-description text-teal-500"></i>
+                Documentos e Historial
+            </h2>
+            <p class="text-xs text-teal-600 mt-0.5">
+                Recetas, indicaciones, estudios y todo tu historial médico
+            </p>
+            </div>
+            <button
+            onclick="abrirModal()"
+            class="btn-primary flex items-center gap-2 text-sm"
+            >
+            <i class="ti ti-upload"></i>
+            Subir documento
+            </button>
+        </div>
+
+        <!--filtros: especialidad + tipo + buscador-->
+        <div class="reveal flex flex-col gap-3">
+            <div
+            class="flex flex-col sm:flex-row gap-3 items-start sm:items-center w-full"
+            >
+            <div
+                class="search-wrap flex items-center w-full max-w-md border rounded-lg"
+            >
+                <i class="ti ti-search mr-2"></i>
+                <input
+                id="buscador"
+                type="text"
+                class="form-input w-full outline-none py-1.5 border-0"
+                placeholder="Buscar por título o descripción"
+                oninput="aplicarFiltros()"
+                />
+            </div>
+
+            <select
+                id="filtroEspecialidad"
+                class="form-input sm:w-56"
+                onchange="aplicarFiltros()"
+            >
+                <option value="">Todas las especialidades</option>
+            </select>
+
+            <span class="text-xs text-gray-400 whitespace-nowrap ml-auto">
+                <span id="contador">0</span> documentos
+            </span>
+            </div>
+
+            <!--chips de tipo de documento-->
+            <div class="flex gap-2 flex-wrap">
+            <button
+                onclick="filtrarTipo('todos')"
+                class="filtro-btn active"
+                id="f-todos"
+            >
+                <i class="ti ti-files"></i> Todos
+            </button>
+            <button
+                onclick="filtrarTipo('Receta')"
+                class="filtro-btn"
+                id="f-Receta"
+            >
+                <i class="ti ti-prescription"></i> Recetas
+            </button>
+            <button
+                onclick="filtrarTipo('Indicacion')"
+                class="filtro-btn"
+                id="f-Indicacion"
+            >
+                <i class="ti ti-clipboard-text"></i> Indicaciones
+            </button>
+            <button
+                onclick="filtrarTipo('Estudio')"
+                class="filtro-btn"
+                id="f-Estudio"
+            >
+                <i class="ti ti-microscope"></i> Estudios
+            </button>
+            <button
+                onclick="filtrarTipo('Otro')"
+                class="filtro-btn"
+                id="f-Otro"
+            >
+                <i class="ti ti-file"></i> Otros
+            </button>
+            </div>
+        </div>
+
+        <!--grilla de documentos-->
+        <div
+            id="grilla"
+            class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+            <!--tarjetas generadas por js-->
+        </div>
+
+        <!--estado vacio-->
+        <div
+            id="empty-state"
+            class="reveal flex flex-col items-center gap-3 py-16 text-center"
+        >
+            <i class="ti ti-file-description text-teal-300 text-5xl"></i>
+            <p class="text-sm text-gray-400">
+            Todavía no subiste ningún documento.
+            </p>
+            <button class="btn-primary" onclick="abrirModal()">
+            Subir el primero
+            </button>
+        </div>
+        </main>
+    </div>
+    <!--fin contenido-->
+    </div>
+    <!--fin flex wrapper-->
+
+    <!--modal - subir/editar documento-->
+    <div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="flex items-center justify-between mb-5">
+        <h3 class="text-base font-semibold text-teal-700" id="modalTitulo">
+            Subir documento
+        </h3>
+        <button
+            onclick="cerrarModal()"
+            class="text-gray-400 hover:text-gray-600"
+        >
+            <i class="ti ti-x text-lg"></i>
+        </button>
+        </div>
+
+        <!--zona de archivo (solo al crear, no al editar)-->
+        <div class="campo-grupo" id="grupoArchivo">
+          <label class="campo-label">Archivo *</label>
+        <div
+            class="dropzone"
+            id="dropzone"
+            onclick="document.getElementById('inpArchivo').click()"
+        >
+            <i class="ti ti-cloud-upload"></i>
+            <p class="text-sm text-teal-700 mt-1">
+            Hacé clic o arrastrá el archivo acá
+            </p>
+            <p class="text-xs text-gray-400 mt-0.5">
+            PDF, JPG, PNG, WEBP o HEIC · máx. 15 MB
+            </p>
+        </div>
+        <input
+            id="inpArchivo"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.webp,.heic"
+            class="hidden"
+            onchange="archivoSeleccionado()"
+        />
+        <div class="archivo-preview" id="archivoPreview">
+            <i class="ti ti-file-check text-teal-600"></i>
+            <span id="archivoNombre" class="flex-1 truncate"></span>
+            <button
+            type="button"
+            onclick="quitarArchivo()"
+            class="text-gray-400 hover:text-red-500"
+            >
+            <i class="ti ti-x"></i>
+            </button>
+        </div>
+        </div>
+
+        <!--tipo de documento-->
+        <div class="campo-grupo">
+          <label class="campo-label">Tipo de documento *</label>
+        <select id="inpTipo" class="form-input">
+            <option value="Receta">Receta</option>
+            <option value="Indicacion">Indicación médica</option>
+            <option value="Estudio">Estudio / Análisis</option>
+            <option value="Otro">Otro</option>
+        </select>
+        </div>
+
+        <!--especialidad-->
+        <div class="campo-grupo">
+        <label class="campo-label">Especialidad</label>
+        <select id="inpEspecialidad" class="form-input">
+            <option value="">General / sin especialidad</option>
+        </select>
+        </div>
+
+        <!--titulo-->
+        <div class="campo-grupo">
+          <label class="campo-label">Título *</label>
+        <input
+            id="inpTitulo"
+            type="text"
+            class="form-input"
+            placeholder="Ej: Receta amoxicilina, Análisis de sangre…"
+            maxlength="150"
+        />
+        </div>
+
+        <!--fecha del documento-->
+        <div class="campo-grupo">
+        <label class="campo-label">Fecha del documento</label>
+        <input id="inpFecha" type="date" class="form-input" />
+        </div>
+
+        <!--descripcion-->
+        <div class="campo-grupo">
+        <label class="campo-label">Descripción</label>
+        <textarea
+            id="inpDescripcion"
+            class="form-input"
+            rows="2"
+            placeholder="Notas u observaciones (opcional)…"
+        ></textarea>
+        </div>
+
+        <p id="errorMsg" class="text-xs text-red-400 mb-3 hidden"></p>
+
+        <div class="flex gap-3 mt-2">
+        <button
+            onclick="guardarDocumento()"
+            class="btn-primary flex-1 text-sm"
+            id="btnGuardar"
+        >
+        <i class="ti ti-device-floppy mr-1"></i>
+            Guardar
+            </button>
+        <button onclick="cerrarModal()" class="btn-secondary flex-1 text-sm">
+            Cancelar
+        </button>
+        </div>
+    </div>
+    </div>
+    <!--fin modal-->
+
+    <script src="/js/reveal.js"></script>
+    <script src="/js/documentos.js"></script>
+    </body>
+</html>

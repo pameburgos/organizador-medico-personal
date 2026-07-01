@@ -1,0 +1,69 @@
+
+body{ /*estilos para todo el cuerpo de la pagina*/
+    font-family: 'Inter', sans-serif; /*letra inter (sin serifa)*/
+    background-color: #FFF8F5; /*fondo de la web*/
+}
+
+.nav-link{ /*botones o enlaces laterales*/
+    display: flex; /*alineacion flexible interna*/
+    align-items: center; /*centra el texto y los iconos verticalmente*/
+    gap: 8px; /*separa el texto del icono por 8 pixeles*/
+
+    padding: 10px 20px; /*da espacio interno (10px alto, 20 px ancho)*/
+
+    font-size: 14px; /*tamaño del texto en 14 pixeles*/
+    color: #72243E; /*color vino oscuro*/
+
+    text-decoration: none; /*elimina el subrayado clasico de los enlaces*/
+
+    transition: background 0.15s; /*suaviza el cambio de color de fondo*/
+}
+
+/*interaccion*/
+.nav-link:hover, /*al pasar el raton por encima del enlace*/
+.nav-link.active{ /*cuando el boton esta activo*/
+    background-color: #f4c0d1;
+    color: #72243e;
+}
+
+/*animacion*/
+    .reveal{ /*estado oculto del elemento*/
+        opacity: 0; /*lo vuelve completamente invisible*/
+        transform: translateY(20px); /*lo empuja 20 pixeles hacia abajo*/
+
+        transition: /*prepara los paramentros de la animacion*/
+            opacity 0.6s ease,
+            transform 0.6s ease;
+    }
+
+    .reveal-visible{ /*activa la animacion*/
+        opacity: 1; /*pasa a visible*/
+        transform: translateY(0); /*regresa a su posicion original*/
+    }
+
+/*al pasar el cursor agrandado de el titulo*/
+.card-title{
+    transition: transform 0.02s ease;
+    display: inline-block;
+}
+.card-title:hover{
+    transform: scale(1.05); /*1.05 significa que es apenas un 5% mas grande*/
+}
+
+/*---barra lateral---*/
+    .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #72243E;
+    text-decoration: none;
+    transition: background 0.15s;
+    }
+    /*cuando pasa el mouse encima*/
+    .nav-link:hover,
+    .nav-link.active {
+    background-color: #e566bd72;
+    color: #72243e;
+    }

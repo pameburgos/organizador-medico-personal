@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --sky-50:  #edf6fd;
+    --sky-100: #cce8f8;
+    --sky-200: #a4d4f2;
+    --sky-400: #55aee0;
+    --sky-600: #2a7fb5;
+    --sky-800: #1a5278;
+
+    --sand-50:  #fdf9f2;
+    --sand-100: #f5edd8;
+    --sand-200: #e8d5b0;
+    --sand-400: #c8a96e;
+    --sand-600: #9b7a3e;
+
+    --text-dark:  #1e2e3d;
+    --text-mid:   #4a6070;
+    --text-soft:  #7a9aaa;
+    --text-muted: #7a9aaa;
+
+    --amber-bg:  #fdf6e3;
+    --amber-bdr: #f0d690;
+    --amber-txt: #8a6a10;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--sand-50);
+    color: var(--text-dark);
+}
+
+/*enlaces de navegacion o barra lateral*/
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 13.5px;
+    color: var(--sky-800);
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.nav-link:hover,
+.nav-link.active {
+    background-color: #a4d4f2;
+    color: #0f3a57;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.alerta-config-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--sky-50);
+    border: 1px solid var(--sky-200);
+    border-radius: 14px;
+    padding: 13px 18px;
+}
+
+.alerta-aviso {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-bdr);
+    border-radius: 14px;
+    padding: 13px 18px;
+}
+
+.seccion-card {
+    background: white;
+    border: 1px solid var(--sand-200);
+    border-radius: 18px;
+    padding: 1.35rem;
+    box-shadow: 0 1px 6px rgba(30,60,90,.04);
+}
+/*encabezado de seccion*/
+.seccion-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+/*iconos circulares diferenciados*/
+.icono-tipo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+.consulta-icono {
+    background: var(--sky-100);
+    color: var(--sky-600);
+}
+.medicacion-icono {
+    background: var(--sand-100);
+    color: var(--sand-600);
+}
+
+/*textos del item de alerta*/
+.alerta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 13px;
+    border: 1px solid var(--sand-200);
+    border-radius: 12px;
+    background: var(--sand-50);
+    transition: background 0.15s, border-color 0.15s;
+}
+.alerta-item:hover {
+    background: var(--sky-50);
+    border-color: var(--sky-200);
+}
+.alerta-item-info { flex: 1; min-width: 0; }
+
+.alerta-item-titulo {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.alerta-item-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.badge-activa {
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--sky-100);
+    color: var(--sky-800);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+.badge-inactiva {
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--sand-100);
+    color: var(--text-soft);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+/*el interrumptor deslizante o toggle switch*/
+.toggle-switch {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    flex-shrink: 0;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--sand-200);
+    border-radius: 20px;
+    transition: 0.2s;
+}
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--sky-400); }
+.toggle-switch input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+/*boton de eliminar item*/
+.btn-eliminar-item {
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+    font-size: 15px;
+}
+.btn-eliminar-item:hover { color: #c0504a; background: #fde8e8; }
+
+/*filas de historial envios*/
+.historial-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-mid);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--sand-100);
+}
+.historial-item:last-child { border-bottom: none; }
+.historial-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--sky-400);
+    flex-shrink: 0;
+}
+.historial-dot.error { background: #f87171; }
+
+.aviso-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sky-50);
+    border: 1px solid var(--sky-200);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 4px;
+}
+
+/*estilos de botones*/
+.btn-primary {
+    background: var(--sky-600);
+    color: white;
+    border: none;
+    border-radius: 11px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--sky-800); }
+
+.btn-primary-sm {
+    background: var(--sky-600);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 6px 13px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+.btn-primary-sm:hover { background: var(--sky-800); }
+
+.btn-secondary {
+    background: var(--sand-50);
+    color: var(--text-mid);
+    border: 1px solid var(--sand-200);
+    border-radius: 11px;
+    padding: 9px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn-secondary:hover { background: var(--sand-100); }
+
+.btn-config {
+    background: white;
+    color: var(--sky-800);
+    border: 1px solid var(--sky-200);
+    border-radius: 11px;
+    padding: 7px 15px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+.btn-config:hover { background: var(--sky-50); }
+
+.btn-agregar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--sky-50);
+    color: var(--sky-800);
+    border: 1px solid var(--sky-200);
+    border-radius: 9px;
+    padding: 5px 11px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+.btn-agregar:hover { background: var(--sky-100); }
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20,40,60,.28);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+}
+.modal.abierto { display: flex; }
+.modal-content {
+    background: white;
+    border-radius: 22px;
+    padding: 1.85rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 12px 48px rgba(30,60,100,.10);
+    border: 1px solid var(--sand-200);
+}
+
+/*campos del formulario*/
+.campo-grupo { margin-bottom: 14px; }
+.campo-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+.campo-input {
+    width: 100%;
+    border: 1px solid var(--sand-200);
+    border-radius: 11px;
+    padding: 9px 13px;
+    font-size: 13px;
+    color: var(--text-dark);
+    outline: none;
+    transition: border 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+    background: var(--sand-50);
+    font-family: 'Inter', sans-serif;
+}
+.campo-input:focus {
+    border-color: var(--sky-400);
+    box-shadow: 0 0 0 3px rgba(85,174,224,.15);
+    background: white;
+}

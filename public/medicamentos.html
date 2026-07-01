@@ -1,0 +1,264 @@
+<!--shift + tab-->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medicamentos – Organizador</title>
+
+  <!--tailwind-->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!--tabler icons-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <!--mi css-->
+  <link rel="stylesheet" href="/css/medicamentos.css" />
+</head>
+
+<body class="min-h-screen">
+  <div class="flex min-h-screen">
+
+    <!--barra lateral-->
+    <aside class="w-48 flex-shrink-0 bg-[#F2E6FC] border-r border-[#E2D0F2] flex flex-col py-6">
+      <div class="px-5 pb-5 mb-4 border-b border-[#E2D0F2]">
+        <h1 class="text-base font-semibold text-[#5A4275]">Organizador</h1>
+      </div>
+
+      <nav class="flex flex-col gap-1">
+        <a href="dashboard.html" class="nav-link">
+          <i class="ti ti-layout-dashboard"></i>
+          General
+        </a>
+
+        <a href="especialidades.html" class="nav-link">
+          <i class="ti ti-stethoscope"></i>
+          Especialidades
+        </a>
+
+        <a href="consultas.html" class="nav-link">
+          <i class="ti ti-calendar-event"></i>
+          Consultas
+        </a>
+
+        <a href="documentos.html" class="nav-link">
+          <i class="ti ti-file-description"></i>
+          Documentos
+        </a>
+
+        <a href="medicamentos.html" class="nav-link active">
+          <i class="ti ti-pill"></i>
+          Medicamentos
+        </a>
+
+        <a href="alertas.html" class="nav-link">
+          <i class="ti ti-bell"></i>
+          Alertas
+        </a>
+      </nav>
+    </aside>
+
+    <!--contenido principal-->
+    <div class="flex-1 flex flex-col">
+
+      <!--topbar-->
+      <div class="bg-[#F1E7FA] border-b border-[#E2D0F2] px-6 py-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-[#4A3D5C]">Pamela Burgos</h2>
+          <span class="text-sm text-[#7A6B8E]">Organizador Médico Personal</span>
+        </div>
+        <i class="ti ti-heart text-[#E89DBC] text-xl"></i>
+      </div>
+
+      <main class="p-6 flex flex-col gap-6">
+
+        <!--encabezado de seccion-->
+        <div class="reveal flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-semibold text-[#6F5390] flex items-center gap-2">
+              <i class="ti ti-pill"></i> Mis Medicamentos
+            </h3>
+            <p class="text-xs text-gray-400 mt-0.5">Lo que tomás (o tomaste) y cuándo</p>
+          </div>
+          <button class="btn-primary flex items-center gap-1.5" onclick="abrirModal()">
+            <i class="ti ti-plus"></i> Nuevo medicamento
+          </button>
+        </div>
+
+        <!--barra de busqueda + filtros + contador-->
+        <div class="reveal flex flex-col sm:flex-row gap-3 items-start sm:items-center w-full justify-between">
+          <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center w-full">
+            <div class="search-wrap flex items-center w-full max-w-md border">
+              <i class="ti ti-search mr-2"></i>
+              <input id="buscador" type="text" class="form-input w-full outline-none py-1"
+                placeholder="Buscar medicamento…" oninput="filtrarTarjetas()">
+            </div>
+            <div class="flex gap-2">
+              <button onclick="filtrarEstado('todos')" class="filtro-btn active" id="f-todos">Todos</button>
+              <button onclick="filtrarEstado('encurso')" class="filtro-btn" id="f-encurso">En curso</button>
+              <button onclick="filtrarEstado('finalizado')" class="filtro-btn" id="f-finalizado">Finalizados</button>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400 whitespace-nowrap">
+            <span id="contador">0</span> medicamentos
+          </span>
+        </div>
+
+        <!--grilla de tarjetas-->
+        <div id="grilla" class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!--tarjetas generadas por js-->
+        </div>
+
+        <!--estado vacio-->
+        <div id="empty-state" class="reveal flex flex-col items-center gap-3 py-12 text-center">
+          <i class="ti ti-pill text-[#CDAEE3] text-5xl"></i>
+          <p class="text-sm text-gray-400">Todavía no agregaste ningún medicamento.</p>
+          <button class="btn-primary" onclick="abrirModal()">Agregar el primero</button>
+        </div>
+
+        <!--registro de tomas-->
+        <div class="reveal">
+          <div class="bg-white border border-[#E2D0F2] rounded-2xl p-5">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <h3 class="text-sm font-semibold text-[#6F5390] flex items-center gap-2">
+                <i class="ti ti-history"></i>
+                Registro de tomas
+              </h3>
+              <select id="filtroHistorial" class="campo-input" style="width:auto;" onchange="cargarHistorial()">
+                <option value="">Todos los medicamentos</option>
+              </select>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-gray-600">
+                <thead>
+                  <tr class="text-xs text-[#B38FD1] border-b border-[#F1E7FA]">
+                    <th class="text-left pb-2 font-medium">Medicamento</th>
+                    <th class="text-left pb-2 font-medium">Fecha</th>
+                    <th class="text-left pb-2 font-medium">Hora</th>
+                    <th class="text-left pb-2 font-medium">Notas</th>
+                    <th class="pb-2"></th>
+                  </tr>
+                </thead>
+                <tbody id="tablaHistorial">
+                  <!--filas por js-->
+                </tbody>
+              </table>
+              <p class="text-center text-xs text-[#CDAEE3] py-6 hidden" id="sinHistorial">
+                Todavía no registraste ninguna toma.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div><!--fin contenido-->
+  </div><!--fin flex wrapper-->
+
+  <!--modal: nuevo / editar medicamento-->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-base font-semibold text-[#6F5390]" id="modalTitulo">Nuevo medicamento</h3>
+        <button onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600">
+          <i class="ti ti-x text-lg"></i>
+        </button>
+      </div>
+
+      <div class="campo-grupo">
+        <label class="campo-label">Nombre *</label>
+        <input id="inpNombre" type="text" class="campo-input" placeholder="Ej: Ibuprofeno 400mg">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="campo-grupo">
+          <label class="campo-label">Dosis</label>
+          <input id="inpDosis" type="text" class="campo-input" placeholder="Ej: 1 tableta">
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Vía</label>
+          <select id="inpVia" class="campo-input">
+            <option value="Oral">Oral</option>
+            <option value="Tópica">Tópica</option>
+            <option value="Inyectable">Inyectable</option>
+            <option value="Gotas">Gotas</option>
+            <option value="Inhalada">Inhalada</option>
+            <option value="Otra">Otra</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label class="campo-label">Frecuencia</label>
+        <input id="inpFrecuencia" type="text" class="campo-input" placeholder="Ej: Cada 8 horas">
+      </div>
+
+      <div class="campo-grupo">
+        <label class="campo-label">Indicación / motivo</label>
+        <input id="inpIndicacion" type="text" class="campo-input" placeholder="Ej: Dolor de cabeza, indicado por Dra. García">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="campo-grupo">
+          <label class="campo-label">Fecha de inicio</label>
+          <input id="inpFechaInicio" type="date" class="campo-input">
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Fecha de fin</label>
+          <input id="inpFechaFin" type="date" class="campo-input">
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label class="campo-label">Notas</label>
+        <textarea id="inpNotas" class="campo-input" rows="2" placeholder="Opcional…"></textarea>
+      </div>
+
+      <p id="errorMsg" class="text-xs text-red-400 hidden mb-2">Completá los campos obligatorios.</p>
+
+      <div class="flex gap-3 mt-2">
+        <button onclick="guardarMedicamento()" class="btn-primary flex-1 text-sm">
+          <i class="ti ti-device-floppy mr-1"></i> Guardar
+        </button>
+        <button onclick="cerrarModal()" class="btn-secondary flex-1 text-sm">Cancelar</button>
+      </div>
+    </div>
+  </div><!--fin modal medicamento-->
+
+  <!--modal: registrar toma-->
+  <div class="modal" id="modalToma">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-base font-semibold text-[#6F5390]">
+          <i class="ti ti-pill mr-1"></i> Registrar toma
+        </h3>
+        <button onclick="cerrarModalToma()" class="text-gray-400 hover:text-gray-600">
+          <i class="ti ti-x text-lg"></i>
+        </button>
+      </div>
+
+      <p class="text-sm text-gray-500 mb-4" id="tomaMedNombre"></p>
+
+      <input type="hidden" id="tomaIdMedicamento">
+
+      <div class="campo-grupo">
+        <label class="campo-label">Fecha y hora</label>
+        <input id="inpTomaFechaHora" type="datetime-local" class="campo-input">
+      </div>
+
+      <div class="campo-grupo">
+        <label class="campo-label">Notas</label>
+        <input id="inpTomaNotas" type="text" class="campo-input" placeholder="Opcional, ej: con el almuerzo">
+      </div>
+
+      <div class="flex gap-3 mt-2">
+        <button onclick="guardarToma()" class="btn-primary flex-1 text-sm">
+          <i class="ti ti-check mr-1"></i> Registrar
+        </button>
+        <button onclick="cerrarModalToma()" class="btn-secondary flex-1 text-sm">Cancelar</button>
+      </div>
+    </div>
+  </div><!--fin modal toma-->
+
+  <script src="/js/reveal.js"></script>
+  <script src="/js/medicamentos.js"></script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!--shift + tab-->
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Especialidades – Organizador</title>
+    <!--buscador-->
+
+    <!--tailwind-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--tabler icons-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <link rel="stylesheet" href="css/especialidades.css" />
+  </head>
+
+  <body class="min-h-screen">
+    <div class="flex min-h-screen">
+      <!--barra lateral o sidebar-->
+      <aside
+        class="w-48 flex-shrink-0 bg-[#F5F0FB] border-r border-purple-200 flex flex-col py-6"
+      >
+        <div class="px-5 pb-5 mb-4 border-b border-purple-200">
+          <h1 class="text-base font-semibold text-[#5B21B6]">Organizador</h1>
+        </div>
+
+        <nav class="flex flex-col gap-1">
+          <a href="dashboard.html" class="nav-link">
+            <i class="ti ti-layout-dashboard"></i>
+            General
+          </a>
+
+          <a href="especialidades.html" class="nav-link active">
+            <i class="ti ti-stethoscope"></i>
+            Especialidades
+          </a>
+
+          <a href="consultas.html" class="nav-link">
+            <i class="ti ti-calendar-event"></i>
+            Consultas
+          </a>
+
+          <a href="documentos.html" class="nav-link">
+            <i class="ti ti-file-description"></i>
+            Documentos
+          </a>
+
+          <a href="medicamentos.html" class="nav-link">
+            <i class="ti ti-pill"></i>
+            Medicamentos
+          </a>
+
+          <a href="alertas.html" class="nav-link">
+            <i class="ti ti-bell"></i>
+            Alertas
+          </a>
+        </nav>
+      </aside>
+
+      <!--contenido principal-->
+      <div class="flex-1 flex flex-col">
+        <!--barra de herramientas o  topbar -->
+        <div
+          class="bg-[#F1EBFA] border-b border-purple-200 px-6 py-4 flex items-center justify-between"
+        >
+          <div>
+            <h2 class="text-lg font-semibold text-purple-900">Pamela Burgos</h2>
+
+            <span class="text-sm text-[#8B7AAE]">
+              Organizador Médico Personal
+            </span>
+          </div>
+
+          <i class="ti ti-heart text-purple-400 text-xl"></i
+          ><!--corazoncito-->
+        </div>
+
+        <main class="p-6 flex flex-col gap-6">
+          <!-- encabezado de sección -->
+          <div class="reveal flex items-center justify-between">
+            <div>
+              <h3
+                class="text-base font-semibold text-pink-800 flex items-center gap-2"
+              >
+                <i class="ti ti-stethoscope"></i> Especialidades Médicas
+              </h3>
+              <p class="text-xs text-gray-400 mt-0.5">
+                Tratamientos y Controles que seguís
+              </p>
+            </div>
+
+            <!--boton para agregar nueva especialidad-->
+            <button
+              class="btn-primary flex items-center gap-1.5"
+              onclick="abrirModal()"
+            >
+              <i class="ti ti-plus"></i> Nueva
+            </button>
+          </div>
+
+          <!-- barra de búsqueda + contador de n especialidades-->
+          <div
+            class="reveal flex flex-col sm:flex-row gap-3 items-start sm:items-center w-full"
+          >
+            <div class="search-wrap flex items-center w-full max-w-md border">
+              <i class="ti ti-search mr-2"></i>
+              <input
+                id="buscador"
+                type="text"
+                class="form-input w-full outline-none py-1"
+                placeholder="Buscar especialidad o médico"
+                oninput="filtrar()"
+              />
+            </div>
+            <span class="text-xs text-gray-400 whitespace-nowrap">
+              <span id="contador">0</span> especialidades
+            </span>
+          </div>
+
+          <!-- grilla de tarjetas -->
+          <div
+            id="grilla"
+            class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            <!-- las tarjetas se generan desde JS -->
+          </div>
+
+          <!-- estado vacío -->
+          <div
+            id="empty-state"
+            class="reveal flex flex-col items-center gap-3 py-16 text-center"
+          >
+            <i class="ti ti-stethoscope text-purple-300 text-5xl"></i>
+            <p class="text-sm text-gray-400">
+              Todavía no agregaste ninguna especialidad.
+            </p>
+            <button class="btn-primary" onclick="abrirModal()">
+              Agregar la primera
+            </button>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!------modal nueva especialidad (cajita de registro para la nueva especialidad)------->
+    <div id="modal-overlay" onclick="cerrarModalFuera(event)">
+      <div id="modal-box">
+        <input type="hidden" id="campo-id" />
+        <!-- botón cerrar -->
+        <button
+          onclick="cerrarModal()"
+          class="absolute top-4 right-4 text-pink-300 hover:text-pink-600 text-xl"
+        >
+          <i class="ti ti-x"></i>
+        </button>
+
+        <h4
+          class="text-sm font-semibold text-pink-800 mb-5 flex items-center gap-2"
+        >
+          <i class="ti ti-stethoscope"></i>
+          <span id="modal-titulo">Nueva especialidad</span>
+        </h4>
+
+        <div class="flex flex-col gap-3">
+          <div>
+            <label class="text-xs text-gray-400 mb-1 block"
+              >Especialidad *</label
+            >
+            <input
+              id="campo-especialidad"
+              class="form-input"
+              placeholder="Ej: Cardiología"
+              maxlength="60"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 mb-1 block"
+              >Médico / Dr. *</label
+            >
+            <input
+              id="campo-medico"
+              class="form-input"
+              placeholder="Ej: Dra. García"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 mb-1 block"
+              >Centro / Clínica</label
+            >
+            <input
+              id="campo-centro"
+              class="form-input"
+              placeholder="Ej: Hospital Central"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 mb-1 block">Teléfono</label>
+            <input
+              id="campo-tel"
+              class="form-input"
+              placeholder="Ej: 0981 123 456"
+              type="tel"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 mb-1 block">Estado</label>
+            <select id="campo-estado" class="form-input">
+              <option value="activa">Activa</option>
+              <option value="pendiente">Pendiente turno</option>
+              <option value="inactiva">Inactiva</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 mb-1 block">Notas</label>
+            <textarea
+              id="campo-notas"
+              class="form-input"
+              rows="2"
+              placeholder="Observaciones…"
+            ></textarea>
+          </div>
+
+          <p id="error-msg" class="text-xs text-red-400 hidden">
+            Completá los campos obligatorios.
+          </p>
+
+          <div class="flex justify-end gap-2 mt-2">
+            <button class="btn-ghost" onclick="cerrarModal()">Cancelar</button>
+            <button class="btn-primary" onclick="guardar()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+    <script src="js/especialidades.js"></script>
+  </body>
+</html>

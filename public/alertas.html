@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizador - Alertas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="/css/alertas.css">
+  <style>
+    .bg-sidebar   { background-color: #daedf8; }
+    .border-sidebar { border-color: #b8d8ee; }
+    .bg-topbar    { background-color: #daedf8; }
+    .border-topbar  { border-color: #b8d8ee; }
+    .text-brand   { color: #1a5278; }
+    .text-brand-sub { color: #5590b8; }
+    .icon-accent  { color: #55aee0; }
+    .icon-deco    { color: #c8a96e; }
+  </style>
+</head>
+
+<body class="min-h-screen" style="background:#fdf9f2;">
+  <div class="flex min-h-screen">
+
+    <aside class="w-48 flex-shrink-0 bg-sidebar flex flex-col py-6" style="border-right:1px solid #b8d8ee;">
+      <div class="px-5 pb-5 mb-4" style="border-bottom:1px solid #b8d8ee;">
+        <h1 class="text-base font-semibold text-brand">Organizador</h1>
+      </div>
+      <nav class="flex flex-col gap-0.5">
+        <a href="dashboard.html" class="nav-link"><i class="ti ti-layout-dashboard"></i>General</a>
+        <a href="especialidades.html" class="nav-link"><i class="ti ti-stethoscope"></i>Especialidades</a>
+        <a href="consultas.html" class="nav-link"><i class="ti ti-calendar-event"></i>Consultas</a>
+        <a href="documentos.html" class="nav-link"><i class="ti ti-file-description"></i>Documentos</a>
+        <a href="medicamentos.html" class="nav-link"><i class="ti ti-pill"></i>Medicamentos</a>
+        <a href="alertas.html" class="nav-link active"><i class="ti ti-bell"></i>Alertas</a>
+      </nav>
+    </aside>
+
+    <div class="flex-1 flex flex-col">
+
+      <div class="bg-topbar px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid #b8d8ee;">
+        <div>
+          <h2 class="text-base font-semibold text-brand">Pamela Burgos</h2>
+          <span class="text-sm text-brand-sub">Organizador Médico Personal</span>
+        </div>
+        <i class="ti ti-heart text-xl icon-deco"></i>
+      </div>
+
+      <main class="p-6 flex flex-col gap-5">
+
+        <div class="reveal flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-semibold flex items-center gap-2" style="color:#1a5278;">
+              <i class="ti ti-bell icon-accent"></i>
+              Alertas
+            </h2>
+            <p class="text-xs mt-0.5" style="color:#5a7a8a;">Recordatorios por email para consultas y medicamentos</p>
+          </div>
+          <button onclick="abrirModalConfigEmail()" class="btn-config flex items-center gap-2 text-sm">
+            <i class="ti ti-settings"></i>
+            Configurar email
+          </button>
+        </div>
+
+        <div class="reveal alerta-config-banner" id="bannerEmail">
+          <i class="ti ti-mail" style="color:#2a7fb5;"></i>
+          <span class="text-sm" style="color:#4a6070;">
+            Los recordatorios se enviarán a <strong id="emailMostrado">—</strong>
+          </span>
+          <button onclick="abrirModalConfigEmail()" class="text-xs ml-auto" style="color:#2a7fb5;text-decoration:underline;">Cambiar</button>
+        </div>
+
+        <div class="reveal alerta-aviso" id="avisoSinEmail" style="display:none">
+          <i class="ti ti-alert-circle" style="color:#c9a100;"></i>
+          <span class="text-sm" style="color:#8a6a10;">Configurá tu email para recibir recordatorios.</span>
+          <button onclick="abrirModalConfigEmail()" class="btn-primary-sm ml-auto">Configurar ahora</button>
+        </div>
+
+        <div class="reveal grid md:grid-cols-2 gap-4">
+
+          <div class="seccion-card">
+            <div class="seccion-header">
+              <div class="flex items-center gap-2">
+                <span class="icono-tipo consulta-icono"><i class="ti ti-calendar-event"></i></span>
+                <div>
+                  <h3 class="text-sm font-semibold" style="color:#1e2e3d;">Recordatorios de Consultas</h3>
+                  <p class="text-xs" style="color:#5a7a8a;">1 día antes de cada turno programado</p>
+                </div>
+              </div>
+              <button onclick="abrirModalAlerta('consulta')" class="btn-agregar">
+                <i class="ti ti-plus"></i>Agregar
+              </button>
+            </div>
+            <ul class="flex flex-col gap-2 mt-4" id="listaAlertasConsulta">
+              <li class="text-xs text-center py-4" style="color:#5a7a8a;">Cargando…</li>
+            </ul>
+          </div>
+
+          <div class="seccion-card">
+            <div class="seccion-header">
+              <div class="flex items-center gap-2">
+                <span class="icono-tipo medicacion-icono"><i class="ti ti-pill"></i></span>
+                <div>
+                  <h3 class="text-sm font-semibold" style="color:#1e2e3d;">Recordatorios de Medicación</h3>
+                  <p class="text-xs" style="color:#5a7a8a;">Recordatorios periódicos para tus medicamentos</p>
+                </div>
+              </div>
+              <button onclick="abrirModalAlerta('medicacion')" class="btn-agregar">
+                <i class="ti ti-plus"></i>Agregar
+              </button>
+            </div>
+            <ul class="flex flex-col gap-2 mt-4" id="listaAlertasMedicacion">
+              <li class="text-xs text-center py-4" style="color:#5a7a8a;">Cargando…</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="reveal">
+          <div class="rounded-2xl p-5" style="background:white;border:1px solid #e8d5b0;">
+            <h3 class="text-sm font-semibold mb-4 flex items-center gap-2" style="color:#4a6070;">
+              <i class="ti ti-history" style="color:#a4d4f2;"></i>
+              Últimos envíos
+            </h3>
+            <ul class="flex flex-col gap-2" id="historialEnvios">
+              <li class="text-xs text-center py-3" style="color:#5a7a8a;">Sin envíos registrados.</li>
+            </ul>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: Configurar email -->
+  <div class="modal" id="modalEmail">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-base font-semibold" style="color:#1a5278;">Configurar email</h3>
+        <button onclick="cerrarModalEmail()" style="color:#5a7a8a;" class="hover:text-gray-500">
+          <i class="ti ti-x text-lg"></i>
+        </button>
+      </div>
+      <p class="text-sm mb-4" style="color:#7a9aaa;">
+        Los recordatorios se enviarán a esta dirección. Podés cambiarla cuando quieras.
+      </p>
+      <div class="campo-grupo">
+        <label class="campo-label">Tu email</label>
+        <input id="inpEmail" type="email" class="campo-input" placeholder="pamela@ejemplo.com">
+      </div>
+      <div class="flex gap-3 mt-5">
+        <button onclick="guardarEmail()" class="btn-primary flex-1 text-sm">
+          <i class="ti ti-device-floppy mr-1"></i>Guardar
+        </button>
+        <button onclick="cerrarModalEmail()" class="btn-secondary flex-1 text-sm">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Nueva alerta -->
+  <div class="modal" id="modalAlerta">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-base font-semibold" id="modalAlertaTitulo" style="color:#1a5278;">Nueva alerta</h3>
+        <button onclick="cerrarModalAlerta()" style="color:#5a7a8a;" class="hover:text-gray-500">
+          <i class="ti ti-x text-lg"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="inpTipoAlerta">
+      <input type="hidden" id="inpAlertaId">
+
+      <div id="camposConsulta">
+        <div class="campo-grupo">
+          <label class="campo-label">Consulta</label>
+          <select id="inpConsulta" class="campo-input">
+            <option value="">Seleccioná una consulta…</option>
+          </select>
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Descripción (opcional)</label>
+          <input id="inpDescConsulta" type="text" class="campo-input" placeholder="Ej: Recordatorio turno cardiólogo">
+        </div>
+        <div class="aviso-info">
+          <i class="ti ti-info-circle" style="color:#55aee0;"></i>
+          <span class="text-xs" style="color:#4a6070;">El email se enviará 1 día antes del turno.</span>
+        </div>
+      </div>
+
+      <div id="camposMedicacion" style="display:none">
+        <div class="campo-grupo">
+          <label class="campo-label">Medicamento</label>
+          <input id="inpNombreMed" type="text" class="campo-input" placeholder="Ej: Ibuprofeno 400mg">
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Descripción (opcional)</label>
+          <input id="inpDescMed" type="text" class="campo-input" placeholder="Ej: Tomar con las comidas">
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Repetir cada</label>
+          <select id="inpFrecuencia" class="campo-input">
+            <option value="4">4 horas</option>
+            <option value="6">6 horas</option>
+            <option value="8" selected>8 horas</option>
+            <option value="12">12 horas</option>
+            <option value="24">24 horas (1 vez al día)</option>
+          </select>
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Duración del tratamiento (días)</label>
+          <input id="inpDias" type="number" min="1" value="3" class="campo-input" placeholder="Ej: 3">
+        </div>
+        <div class="campo-grupo">
+          <label class="campo-label">Primer recordatorio</label>
+          <input id="inpPrimerEnvio" type="datetime-local" class="campo-input">
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-5">
+        <button onclick="guardarAlerta()" class="btn-primary flex-1 text-sm">
+          <i class="ti ti-device-floppy mr-1"></i>Guardar alerta
+        </button>
+        <button onclick="cerrarModalAlerta()" class="btn-secondary flex-1 text-sm">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/reveal.js"></script>
+  <script src="/js/alertas.js"></script>
+</body>
+</html>

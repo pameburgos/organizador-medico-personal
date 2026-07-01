@@ -45,7 +45,7 @@ El sistema utiliza un cron job que revisa y envía alertas cada hora, y guarda u
 ![Alertas](fotos/alertas.png)
 
 ### Alerta recibida de Medicamento
-![Alertas1](fotos/recordatorio-medicamento.png)
+![Alertas1](fotos/recordatorio-medicacion.png)
 ### Alerta recibida de Consulta
 ![Alertas1](fotos/recordatorio-consulta.png)
 

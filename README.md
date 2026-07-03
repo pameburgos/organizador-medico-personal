@@ -226,5 +226,4 @@ Si querés colaborar:
 Para reportar un error o sugerir una mejora sin escribir código, podés abrir un issue describiendo el problema o la idea, con pasos para reproducirlo si aplica.
 
 ## Desarrollado por
-Pamela Burgos
-Proyecto de Organizador Médico Personal — 2026
+Pamela Burgos - Proyecto de Organizador Médico Personal — 2026

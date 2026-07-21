@@ -83,8 +83,8 @@ function renderTabla() {
 
     const lista = todasLasConsultas.filter(c => estadoCoincideConFiltro(c.ESTADO, filtroActual));
 
-    const etiquetasTitulo = { todas: 'todas', futura: 'próximas', realizada: 'realizadas' };
-    tituloLista.textContent = etiquetasTitulo[filtroActual] || 'todas';
+    const etiquetasTitulo = { todas: 'TODAS', futura: 'PROXIMAS', realizada: 'REALIZADAS' };
+    tituloLista.textContent = etiquetasTitulo[filtroActual] || 'TODAS';
 
     if (lista.length === 0) {
         tbody.innerHTML = '';
@@ -99,6 +99,7 @@ function renderTabla() {
             <tr class="border-b border-pink-50">
                 <td class="py-2">${c.NOMBRE_ESPECIALIDAD}</td>
                 <td class="py-2">${c.NOMBRE_DOCTOR || '—'}</td>
+                <td class="py-2">${c.LUGAR || '—'}</td>
                 <td class="py-2">${c.FECHA}</td>
                 <td class="py-2">${c.HORA}</td>
                 <td class="py-2">
@@ -116,25 +117,27 @@ function renderTabla() {
     }).join('');
 }
 
-// ─── CALENDARIOS (mes anterior, actual y siguiente) ──────────────
+//---CALENDARIOS (mes pasado, mes actual y mes siguiente)---
 function renderCalendarios() {
+    //busca el contenedor y la fecha actual (guarda el dia exacto, mes y año en tiempo real)
     const grid = document.getElementById('calendariosGrid');
     const hoy  = new Date();
 
     // mapa fecha (YYYY-MM-DD) -> { futura, realizada, cancelada }
     const porFecha = {};
-    todasLasConsultas.forEach(c => {
+    todasLasConsultas.forEach(c => {//agrupa y procesa las citas
         if (!porFecha[c.FECHA]) porFecha[c.FECHA] = { futura: 0, realizada: 0, cancelada: 0 };
         const { clase } = infoEstado(c.ESTADO);
         porFecha[c.FECHA][clase]++;
     });
 
+    //calcula los 3 meses a mostrar
     const meses = [-1, 0, 1].map(offset => {
         const d = new Date(hoy.getFullYear(), hoy.getMonth() + offset, 1);
         return { anio: d.getFullYear(), mes: d.getMonth() };
     });
 
-    grid.innerHTML = meses.map(({ anio, mes }) => construirCalendarioMes(anio, mes, porFecha, hoy)).join('');
+    grid.innerHTML = meses.map(({ anio, mes }) => construirCalendarioMes(anio, mes, porFecha, hoy)).join('');//dibuja e inserta los meses en el calendario
 }
 
 function construirCalendarioMes(anio, mes, porFecha, hoy) {
@@ -197,6 +200,7 @@ async function abrirModalEditar(id) {
 
         document.getElementById('inpEspecialidad').value = c.ID_ESPECIALIDAD;
         mostrarDoctorDeEspecialidad();
+        document.getElementById('inpLugar').value      = c.LUGAR || '';
         document.getElementById('inpFecha').value      = c.FECHA;
         document.getElementById('inpHora').value       = c.HORA;
         document.getElementById('inpMotivo').value     = c.MOTIVO || '';
@@ -218,6 +222,7 @@ function limpiarCampos() {
     document.getElementById('inpDoctor').value        = '';
     document.getElementById('inpFecha').value         = '';
     document.getElementById('inpHora').value           = '';
+    document.getElementById('inpLugar').value          = '';
     document.getElementById('inpMotivo').value         = '';
     document.getElementById('inpNotasPost').value      = '';
     document.getElementById('inpEstado').value         = 'Programada';
@@ -228,6 +233,7 @@ async function guardarConsulta() {
     const id_especialidad = document.getElementById('inpEspecialidad').value;
     const fecha            = document.getElementById('inpFecha').value;
     const hora              = document.getElementById('inpHora').value;
+    const lugar              = document.getElementById('inpLugar').value.trim();
     const motivo            = document.getElementById('inpMotivo').value.trim();
     const notas_post        = document.getElementById('inpNotasPost').value.trim();
     const estado            = document.getElementById('inpEstado').value;
@@ -237,7 +243,7 @@ async function guardarConsulta() {
         return;
     }
 
-    const body = { id_especialidad, fecha, hora, motivo, notas_post, estado };
+    const body = { id_especialidad, fecha, hora, lugar, motivo, notas_post, estado };
 
     try {
         const url    = editandoId ? `${API}/${editandoId}` : API;

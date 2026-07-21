@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
                         c.id_especialidad,
                         e.nombre              AS nombre_especialidad,
                         e.nombre_doctor,
+                        c.lugar,
                         TO_CHAR(c.fecha_hora, 'YYYY-MM-DD')    AS fecha,
                         TO_CHAR(c.fecha_hora, 'HH24:MI')       AS hora,
                         c.motivo,
@@ -34,6 +35,7 @@ router.get('/', async (req, res) => {
                     c.id_especialidad,
                     e.nombre              AS nombre_especialidad,
                     e.nombre_doctor,
+                    c.lugar,
                     TO_CHAR(c.fecha_hora, 'YYYY-MM-DD')    AS fecha,
                     TO_CHAR(c.fecha_hora, 'HH24:MI')       AS hora,
                     c.motivo,
@@ -67,6 +69,7 @@ router.get('/:id', async (req, res) => {
                     c.id_especialidad,
                     e.nombre              AS nombre_especialidad,
                     e.nombre_doctor,
+                    c.lugar,
                     TO_CHAR(c.fecha_hora, 'YYYY-MM-DD')    AS fecha,
                     TO_CHAR(c.fecha_hora, 'HH24:MI')       AS hora,
                     c.motivo,
@@ -91,7 +94,7 @@ router.get('/:id', async (req, res) => {
 
 //crear una nueva consulta
 router.post('/', async (req, res) => {
-    const { id_especialidad, fecha, hora, motivo, notas_post, estado } = req.body;
+    const { id_especialidad, fecha, hora, lugar, motivo, notas_post, estado } = req.body;
 
     if (!id_especialidad || !fecha || !hora)
         return res.status(400).json({ error: 'La especialidad, fecha y hora son obligatorias' });
@@ -103,14 +106,15 @@ router.post('/', async (req, res) => {
     try {
         conn = await getConnection();
         const result = await conn.execute(
-            `INSERT INTO consultas (id_especialidad, fecha_hora, motivo, notas_post, estado)
+            `INSERT INTO consultas (id_especialidad, fecha_hora, lugar, motivo, notas_post, estado)
             VALUES (:id_especialidad,
                     TO_TIMESTAMP(:fecha_hora, 'YYYY-MM-DD HH24:MI'),
-                    :motivo, :notas_post, :estado)
+                    :lugar, motivo, :notas_post, :estado)
             RETURNING id_consulta INTO :id`,
             {
                 id_especialidad: Number(id_especialidad),
                 fecha_hora:      fechaHoraStr,
+                lugar:           lugar      || null,
                 motivo:          motivo     || null,
                 notas_post:      notas_post || null,
                 estado:          estado     || 'Programada',
@@ -132,7 +136,7 @@ router.post('/', async (req, res) => {
 
 //actualiza una consulta existente
 router.put('/:id', async (req, res) => {
-    const { id_especialidad, fecha, hora, motivo, notas_post, estado } = req.body;
+    const { id_especialidad, fecha, hora, lugar, motivo, notas_post, estado } = req.body;
 
     if (!id_especialidad || !fecha || !hora)
         return res.status(400).json({ error: 'La especialidad, fecha y hora son obligatorias' });
@@ -146,6 +150,7 @@ router.put('/:id', async (req, res) => {
             `UPDATE consultas
                 SET id_especialidad = :id_especialidad,
                     fecha_hora      = TO_TIMESTAMP(:fecha_hora, 'YYYY-MM-DD HH24:MI'),
+                    lugar           = :lugar,
                     motivo          = :motivo,
                     notas_post      = :notas_post,
                     estado          = :estado
@@ -153,6 +158,7 @@ router.put('/:id', async (req, res) => {
             {
                 id_especialidad: Number(id_especialidad),
                 fecha_hora:      fechaHoraStr,
+                lugar:           lugar      || null,
                 motivo:          motivo     || null,
                 notas_post:      notas_post || null,
                 estado:          estado     || 'Programada',

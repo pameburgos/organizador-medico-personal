@@ -21,39 +21,39 @@
     <div class="flex min-h-screen">
       <!--barra lateral o sidebar-->
       <aside
-        class="w-48 flex-shrink-0 bg-[#F5F0FB] border-r border-purple-200 flex flex-col py-6"
+        class="w-64 flex-shrink-0 bg-purple-100 border-r border-purple-200 flex flex-col py-6"
       >
         <div class="px-5 pb-5 mb-4 border-b border-purple-200">
           <h1 class="text-base font-semibold text-[#5B21B6]">Organizador</h1>
         </div>
 
         <nav class="flex flex-col gap-1">
-          <a href="dashboard.html" class="nav-link">
+          <a href="dashboard.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-layout-dashboard"></i>
             General
           </a>
 
-          <a href="especialidades.html" class="nav-link active">
+          <a href="especialidades.html" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-stethoscope"></i>
             Especialidades
           </a>
 
-          <a href="consultas.html" class="nav-link">
+          <a href="consultas.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-calendar-event"></i>
             Consultas
           </a>
 
-          <a href="documentos.html" class="nav-link">
+          <a href="documentos.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-file-description"></i>
             Documentos
           </a>
 
-          <a href="medicamentos.html" class="nav-link">
+          <a href="medicamentos.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-pill"></i>
             Medicamentos
           </a>
 
-          <a href="alertas.html" class="nav-link">
+          <a href="alertas.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-bell"></i>
             Alertas
           </a>
@@ -67,9 +67,9 @@
           class="bg-[#F1EBFA] border-b border-purple-200 px-6 py-4 flex items-center justify-between"
         >
           <div>
-            <h2 class="text-lg font-semibold text-purple-900">Pamela Burgos</h2>
+            <h2 class="text-xl font-semibold text-purple-900">Pamela Burgos</h2>
 
-            <span class="text-sm text-[#8B7AAE]">
+            <span class="text-base text-[#8B7AAE]">
               Organizador Médico Personal
             </span>
           </div>
@@ -83,11 +83,11 @@
           <div class="reveal flex items-center justify-between">
             <div>
               <h3
-                class="text-base font-semibold text-pink-800 flex items-center gap-2"
+                class="text-2xl font-semibold text-pink-800 flex items-center gap-2"
               >
                 <i class="ti ti-stethoscope"></i> Especialidades Médicas
               </h3>
-              <p class="text-xs text-gray-400 mt-0.5">
+              <p class="text-base text-gray-400 mt-0.5">
                 Tratamientos y Controles que seguís
               </p>
             </div>
@@ -115,7 +115,7 @@
                 oninput="filtrar()"
               />
             </div>
-            <span class="text-xs text-gray-400 whitespace-nowrap">
+            <span class="text-base text-gray-400 whitespace-nowrap">
               <span id="contador">0</span> especialidades
             </span>
           </div>
@@ -134,7 +134,7 @@
             class="reveal flex flex-col items-center gap-3 py-16 text-center"
           >
             <i class="ti ti-stethoscope text-purple-300 text-5xl"></i>
-            <p class="text-sm text-gray-400">
+            <p class="text-base text-gray-400">
               Todavía no agregaste ninguna especialidad.
             </p>
             <button class="btn-primary" onclick="abrirModal()">
@@ -158,7 +158,7 @@
         </button>
 
         <h4
-          class="text-sm font-semibold text-pink-800 mb-5 flex items-center gap-2"
+          class="text-xl font-semibold text-pink-800 mb-5 flex items-center gap-2"
         >
           <i class="ti ti-stethoscope"></i>
           <span id="modal-titulo">Nueva especialidad</span>
@@ -166,7 +166,7 @@
 
         <div class="flex flex-col gap-3">
           <div>
-            <label class="text-xs text-gray-400 mb-1 block"
+            <label class="text-base text-gray-400 mb-1 block"
               >Especialidad *</label
             >
             <input
@@ -177,7 +177,7 @@
             />
           </div>
           <div>
-            <label class="text-xs text-gray-400 mb-1 block"
+            <label class="text-base text-gray-400 mb-1 block"
               >Médico / Dr. *</label
             >
             <input
@@ -187,7 +187,7 @@
             />
           </div>
           <div>
-            <label class="text-xs text-gray-400 mb-1 block"
+            <label class="text-base text-gray-400 mb-1 block"
               >Centro / Clínica</label
             >
             <input
@@ -197,7 +197,7 @@
             />
           </div>
           <div>
-            <label class="text-xs text-gray-400 mb-1 block">Teléfono</label>
+            <label class="text-base text-gray-400 mb-1 block">Teléfono</label>
             <input
               id="campo-tel"
               class="form-input"
@@ -206,7 +206,7 @@
             />
           </div>
           <div>
-            <label class="text-xs text-gray-400 mb-1 block">Estado</label>
+            <label class="text-base text-gray-400 mb-1 block">Estado</label>
             <select id="campo-estado" class="form-input">
               <option value="activa">Activa</option>
               <option value="pendiente">Pendiente turno</option>
@@ -214,7 +214,7 @@
             </select>
           </div>
           <div>
-            <label class="text-xs text-gray-400 mb-1 block">Notas</label>
+            <label class="text-base text-gray-400 mb-1 block">Notas</label>
             <textarea
               id="campo-notas"
               class="form-input"
@@ -223,7 +223,7 @@
             ></textarea>
           </div>
 
-          <p id="error-msg" class="text-xs text-red-400 hidden">
+          <p id="error-msg" class="text-base text-red-400 hidden">
             Completá los campos obligatorios.
           </p>
 

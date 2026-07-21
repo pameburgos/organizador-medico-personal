@@ -43,7 +43,7 @@ body{ /*estilos para todo el cuerpo de la pagina*/
 
 /*al pasar el cursor agrandado de el titulo*/
 .card-title{
-    transition: transform 0.02s ease;
+    transition: transform 0.15s ease;
     display: inline-block;
 }
 .card-title:hover{

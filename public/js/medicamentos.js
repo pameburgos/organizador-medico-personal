@@ -35,6 +35,18 @@ function estadoDeMedicamento(med) {
     return { clase: 'encurso', etiqueta: 'En curso' };
 }
 
+function colorPorVia(via){
+    const mapa = {
+        'Oral':         'pastel-lila',
+        'Tópica':         'pastel-durazno',
+        'Inyectable':         'pastel-rosa',
+        'Gotas':         'pastel-celeste',
+        'Inhalada':         'pastel-turquesa',
+        'Otra':         'pastel-amarillo',
+    };
+    return mapa[via] || 'pastel-lavanda'
+}
+
 // ─── Render de tarjetas ───────────────────────────────────────────
 function renderizarTarjetas(lista) {
     const grilla      = document.getElementById('grilla');
@@ -62,14 +74,15 @@ function renderizarTarjetas(lista) {
     grilla.innerHTML = lista.map(med => {
         const { clase, etiqueta } = estadoDeMedicamento(med);
         const badgeClase = clase === 'encurso' ? 'badge-encurso' : 'badge-finalizado';
+        const colorClase = colorPorVia(med.VIA);
 
         return `
-            <div class="med-card ${clase}">
+            <div class="med-card ${clase} ${colorClase}">
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex items-start gap-3">
-                        <span class="med-icono"><i class="ti ti-pill"></i></span>
+                        <span class="med-icono icono-medicamento"><i class="ti ti-pill"></i></span>
                         <div>
-                            <h4 class="font-semibold text-sm text-[#6F5390]">${escapeHtml(med.NOMBRE)}</h4>
+                            <h4 class="font-semibold text-sm titulo-medicamento">${escapeHtml(med.NOMBRE)}</h4>
                             ${med.DOSIS ? `<p class="text-xs text-gray-500">${escapeHtml(med.DOSIS)}</p>` : ''}
                         </div>
                     </div>

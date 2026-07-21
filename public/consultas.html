@@ -1,246 +1,333 @@
-<!DOCTYPE html> <!--! + tab-->
+<!doctype html>
+<!--! + tab-->
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organizador - Consultas</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organizador - Consultas</title>
 
-  <!--tailwind-->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!--iconos-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
-  <!--mi css-->
-  <link rel="stylesheet" href="/css/consultas.css">
-</head>
+    <!--tailwind-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--iconos-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <!--mi css-->
+    <link rel="stylesheet" href="/css/consultas.css" />
+  </head>
 
-<body class="min-h-screen">
-  <div class="flex min-h-screen">
-
-    <!--barra lateral-->
-    <aside class="w-48 flex-shrink-0  bg-orange-100 border-r border-orange-200 flex flex-col py-6">
-      <div class="px-5 pb-5 mb-4 border-b border-orange-200">
-        <h1 class="text-base font-semibold text-pink-700">
-            Organizador
-        </h1>
-      </div>
-
-      <nav class="flex flex-col gap-1">
-        <a href="dashboard.html" class="nav-link">
-          <i class="ti ti-layout-dashboard"></i>
-          General
-        </a>
-
-        <a href="especialidades.html" class="nav-link">
-          <i class="ti ti-stethoscope"></i>
-          Especialidades
-        </a>
-
-        <a href="consultas.html" class="nav-link">
-          <i class="ti ti-calendar-event"></i>
-          Consultas
-        </a>
-
-        <a href="documentos.html" class="nav-link">
-          <i class="ti ti-file-description"></i>
-          Documentos
-        </a>
-
-        <a href="medicamentos.html" class="nav-link">
-          <i class="ti ti-pill"></i>
-          Medicamentos
-        </a>
-
-        <a href="alertas.html" class="nav-link">
-          <i class="ti ti-bell"></i>
-          Alertas
-        </a>
-      </nav>
-    </aside>
-
-    <!--contenido principal-->
-    <div class="flex-1 flex-col">
-
-      <!--barra superior o topbar-->
-      <div class="bg-orange-100 border-b border-orange-200 px-6 py-4 flex items-center justify-between">
-        <div>
-          <h2 class="text-lg font-semibold text-pink-800">
-              Pamela Burgos
-          </h2>
-          <span class="text-sm text-pink-500">Organizador Médico Personal</span>
+  <body class="min-h-screen">
+    <div class="flex min-h-screen">
+      <!--barra lateral-->
+      <aside
+        class="w-64 flex-shrink-0 bg-orange-100 border-r border-orange-200 flex flex-col py-6"
+      >
+        <div class="px-5 pb-5 mb-4 border-b border-orange-200">
+          <h1 class="text-base font-semibold text-pink-700">Organizador</h1>
         </div>
-        <i class="ti ti-heart text-pink-400 text-xl"></i>
-      </div>
 
-      <main class="p-6 flex flex-col gap-6">
+        <nav class="flex flex-col gap-1">
+          <a
+            href="dashboard.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors"
+          >
+            <i class="ti ti-layout-dashboard"></i>
+            General
+          </a>
 
-        <!--encabezado de seccion-->
-        <div class="reveal flex items-center justify-between">
+          <a
+            href="especialidades.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors"
+          >
+            <i class="ti ti-stethoscope"></i>
+            Especialidades
+          </a>
+
+          <a
+            href="consultas.html"
+            class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors"
+          >
+            <i class="ti ti-calendar-event"></i>
+            Consultas
+          </a>
+
+          <a
+            href="documentos.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors"
+          >
+            <i class="ti ti-file-description"></i>
+            Documentos
+          </a>
+
+          <a
+            href="medicamentos.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors"
+          >
+            <i class="ti ti-pill"></i>
+            Medicamentos
+          </a>
+
+          <a
+            href="alertas.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors"
+          >
+            <i class="ti ti-bell"></i>
+            Alertas
+          </a>
+        </nav>
+      </aside>
+
+      <!--contenido principal-->
+      <div class="flex-1 flex-col">
+        <!--barra superior o topbar-->
+        <div
+          class="bg-orange-100 border-b border-orange-200 px-6 py-4 flex items-center justify-between"
+        >
           <div>
-            <h2 class="text-base font-semibold text-pink-800 flex items-center gap-2">
-              <i class="ti ti-calendar-month text-pink-400"></i>
-                Calendario de Consultas
-            </h2>
-            <p class="text-xs text-pink-500 mt-0.5">Mayo · Junio · Julio 2026</p>
+            <h2 class="text-xl font-semibold text-pink-800">Pamela Burgos</h2>
+            <span class="text-base text-pink-500"
+              >Organizador Médico Personal</span
+            >
           </div>
-            <button onclick="abrirModal()"
-            class="btn-primary flex items-center gap-2 text-sm">
+          <i class="ti ti-heart text-pink-400 text-xl"></i>
+        </div>
+
+        <main class="p-6 flex flex-col gap-6">
+          <!--encabezado de seccion-->
+          <div class="reveal flex items-center justify-between">
+            <div>
+              <h2
+                class="text-2xl font-semibold text-pink-800 flex items-center gap-2"
+              >
+                <i class="ti ti-calendar-month text-pink-400"></i>
+                Calendario de Consultas
+              </h2>
+              <p class="text-base text-pink-500 mt-0.5">
+                Junio · Julio · Agosto 2026
+              </p>
+            </div>
+            <button
+              onclick="abrirModal()"
+              class="btn-primary flex items-center gap-2 text-sm"
+            >
               <i class="ti ti-plus"></i>
               Nueva Consulta
             </button>
-        </div>
+          </div>
 
-        <!--leyenda-->
-        <div class="reveal flex items-center gap-5 flex-wrap">
-          <span class="leyenda-item">
-            <span class="dot dot-futura"></span>
-            Próxima
-          </span>
+          <!--leyenda-->
+          <div class="reveal flex items-center gap-5 flex-wrap">
+            <span class="leyenda-item">
+              <span class="dot dot-futura"></span>
+              Próxima
+            </span>
 
-          <span class="leyenda-item">
-            <span class="dot dot-realizada"></span>
-            Realizada
-          </span>
+            <span class="leyenda-item">
+              <span class="dot dot-realizada"></span>
+              Realizada
+            </span>
 
-          <span class="leyenda-item">
-            <span class="dot dot-hoy"></span>
-            Hoy
-          </span>
+            <span class="leyenda-item">
+              <span class="dot dot-hoy"></span>
+              Hoy
+            </span>
 
-          <span class="leyenda-item">
-            <span class="dot dot-cancelada"></span>
-            Cancelada
-          </span>
-        </div>
+            <span class="leyenda-item">
+              <span class="dot dot-cancelada"></span>
+              Cancelada
+            </span>
+          </div>
 
-        <!--3 calendarios-->
-        <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-4" id="calendariosGrid">
-          <!--realizados por js-->
+          <!--3 calendarios-->
+          <div
+            class="reveal grid grid-cols-1 md:grid-cols-3 gap-4"
+            id="calendariosGrid"
+          >
+            <!--realizados por js-->
+          </div>
 
-        </div>
+          <!--lista de consultas del mes seleccionado-->
+          <div class="reveal">
+            <div class="bg-white border border-pink-200 rounded-2xl p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3
+                  class="text-sm font-semibold text-pink-700 flex items-center gap-2"
+                >
+                  <i class="ti ti-list-details"></i>
+                  Consultas de
+                  <span id="tituloLista" class="ml-1 text-yellow-600"></span>
+                </h3>
+                <div class="flex gap-2">
+                  <button
+                    onclick="filtrarLista('todas')"
+                    class="filtro-btn active text-sm"
+                    id="f-todas"
+                  >
+                    Todas
+                  </button>
+                  <button
+                    onclick="filtrarLista('futura')"
+                    class="filtro-btn text-sm"
+                    id="f-futura"
+                  >
+                    Próximas
+                  </button>
+                  <button
+                    onclick="filtrarLista('realizada')"
+                    class="filtro-btn text-sm"
+                    id="f-realizada"
+                  >
+                    Realizadas
+                  </button>
+                </div>
+              </div>
 
-        <!--lista de consultas del mes seleccionado-->
-        <div class="reveal">
-          <div class="bg-white border border-pink-200 rounded-2xl p-5">
-            
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-sm font-semibold text-pink-700 flex items-center gap-2">
-                <i class="ti ti-list-details"></i>
-                    Consultas de <span id="tituloLista" class="ml-1 text-yellow-600"></span>
-              </h3>
-              <div class="flex gap-2">
-                <button onclick="filtrarLista('todas')" class="filtro-btn active" id="f-todas">Todas</button>
-                <button onclick="filtrarLista('futura')" class="filtro-btn" id="f-futura">Próximas</button>
-                <button onclick="filtrarLista('realizada')" class="filtro-btn" id="f-realizada">Realizadas</button>
+              <!--tabla de consultas-->
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm text-gray-600">
+                  <thead>
+                    <!--tr filas, th columnas-->
+                    <tr class="text-xs text-pink-400 border-b border-pink-100">
+                      <th class="text-left pb-2 font-medium">Especialidades</th>
+                      <th class="text-left pb-2 font-medium">Doctor/a</th>
+                      <th class="text-left pb-2 font-medium">Lugar</th>
+                      <th class="text-left pb-2 font-medium">Fecha</th>
+                      <th class="text-left pb-2 font-medium">Hora</th>
+                      <th class="text-left pb-2 font-medium">Estado</th>
+                      <th class="pb-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaConsultas">
+                    <!--filas por js-->
+                  </tbody>
+                </table>
+
+                <p
+                  class="text-center text-xs text-pink-300 py-6 hidden"
+                  id="sinResultados"
+                >
+                  No hay consultas registradas para este periodo.
+                </p>
               </div>
             </div>
+          </div>
+        </main>
+      </div>
+      <!--fin contenido-->
+    </div>
+    <!--fin flex wrapper-->
 
-            <!--tabla de consultas-->
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm text-gray-600">
-                <thead>
-                  <!--tr filas, th columnas-->
-                  <tr class="text-xs text-pink-400 border-b border-pink-100">
-                    <th class="text-left pb-2 font-medium">Especialidades</th>
-                    <th class="text-left pb-2 font-medium">Doctor/a</th>
-                    <th class="text-left pb-2 font-medium">Fecha</th>
-                    <th class="text-left pb-2 font-medium">Hora</th>
-                    <th class="text-left pb-2 font-medium">Estado</th>
-                    <th class="pb-2"></th>
-                  </tr>
-                </thead>
-                <tbody id="tablaConsultas">
-                  <!--filas por js-->
+    <!--modal - nueva/ediar consulta-->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="text-xl font-semibold text-pink-700" id="modalTitulo">
+            Nueva Consulta
+          </h3>
+          <button
+            onclick="cerrarModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <i class="ti ti-x text-lg"></i>
+          </button>
+        </div>
 
-                </tbody>
-              </table>
+        <!--especialidad-->
+        <div class="campo-grupo">
+          <label class="campo-label text-base">Especialidad</label>
+          <select
+            id="inpEspecialidad"
+            class="campo-input text-base"
+            onchange="mostrarDoctorDeEspecialidad()"
+          >
+            <option value="">Seleccioná una especialidad…</option>
+          </select>
+        </div>
 
-              <p class="text-center text-xs text-pink-300 py-6 hidden" id="sinResultados">
-                No hay consultas registradas para este periodo.
-              </p>
-            </div>
+        <!--doctor (solo lectura, viene de la especialidad elegida)-->
+        <div class="campo-grupo">
+          <label class="campo-label text-base">Doctor/a</label>
+          <input
+            id="inpDoctor"
+            type="text"
+            class="campo-input text-base"
+            placeholder="—"
+            disabled
+          />
+        </div>
 
+        <!--lugar / hospital-->
+        <div class="campo-grupo">
+          <label class="campo-label text-base">Lugar</label>
+          <input
+            id="inpLugar"
+            type="text"
+            class="campo-input text-base"
+            placeholder="Ej: Hospital de Clínicas"
+          />
+        </div>
+        <!--fecha y hora-->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="campo-grupo">
+            <label class="campo-label text-base">Fecha</label>
+            <input id="inpFecha" type="date" class="campo-input text-base" />
+          </div>
+          <div class="campo-grupo">
+            <label class="campo-label text-base">Hora</label>
+            <input id="inpHora" type="time" class="campo-input text-base" />
           </div>
         </div>
 
-      </main>
-    </div><!--fin contenido-->
-  </div><!--fin flex wrapper-->
-  
-  <!--modal - nueva/ediar consulta-->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-
-      <div class="flex items-center justify-between mb-5">
-        <h3 class="text-base font-semibold text-pink-700" id="modalTitulo">
-            Nueva Consulta
-        </h3>
-        <button onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600">
-          <i class="ti ti-x text-lg"></i>
-        </button>
-      </div>
-
-      <!--especialidad-->
-      <div class="campo-grupo">
-        <label class="campo-label">Especialidad</label>
-        <select id="inpEspecialidad" class="campo-input" onchange="mostrarDoctorDeEspecialidad()">
-          <option value="">Seleccioná una especialidad…</option>
-        </select>
-      </div>
-
-      <!--doctor (solo lectura, viene de la especialidad elegida)-->
-      <div class="campo-grupo">
-        <label class="campo-label">Doctor/a</label>
-        <input id="inpDoctor" type="text" class="campo-input" placeholder="—" disabled>
-      </div>
-
-      <!--fecha y hora-->
-      <div class="grid grid-cols-2 gap-3">
+        <!--motivo-->
         <div class="campo-grupo">
-          <label class="campo-label">Fecha</label>
-          <input id="inpFecha" type="date" class="campo-input">
+          <label class="campo-label text-base">Motivo</label>
+          <textarea
+            id="inpMotivo"
+            class="campo-input text-base"
+            rows="2"
+            placeholder="Opcional..."
+          ></textarea>
         </div>
+
+        <!--notas posteriores (solo aplica si ya se realizó)-->
         <div class="campo-grupo">
-          <label class="campo-label">Hora</label>
-          <input id="inpHora" type="time" class="campo-input">
+          <label class="campo-label text-base">Notas posteriores</label>
+          <textarea
+            id="inpNotasPost"
+            class="campo-input text-base"
+            rows="2"
+            placeholder="Opcional, indicaciones luego de la consulta..."
+          ></textarea>
+        </div>
+
+        <!--estado-->
+        <div class="campo-grupo">
+          <label class="campo-label text-base">Estado</label>
+          <select id="inpEstado" class="campo-input text-base">
+            <option value="Programada">Próxima</option>
+            <option value="Realizada">Realizada</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+        </div>
+
+        <div class="flex gap-3 mt-5">
+          <button
+            onclick="guardarConsulta()"
+            class="btn-primary flex-1 text-sm"
+          >
+            <i class="ti ti-device-floppy mr-1"></i>
+            Guardar
+          </button>
+          <button onclick="cerrarModal()" class="btn-secondary flex-1 text-sm">
+            Cancelar
+          </button>
         </div>
       </div>
-
-      <!--motivo-->
-      <div class="campo-grupo">
-        <label class="campo-label">Motivo</label>
-        <textarea id="inpMotivo" class="campo-input" rows="2" placeholder="Opcional..."></textarea>
-      </div>
-
-      <!--notas posteriores (solo aplica si ya se realizó)-->
-      <div class="campo-grupo">
-        <label class="campo-label">Notas posteriores</label>
-        <textarea id="inpNotasPost" class="campo-input" rows="2" placeholder="Opcional, indicaciones luego de la consulta..."></textarea>
-      </div>
-
-      <!--estado-->
-      <div class="campo-grupo">
-        <label class="campo-label">Estado</label>
-        <select id="inpEstado" class="campo-input">
-          <option value="Programada">Próxima</option>
-          <option value="Realizada">Realizada</option>
-          <option value="Cancelada">Cancelada</option>
-        </select>
-      </div>
-
-      <div class="flex gap-3 mt-5">
-        <button onclick="guardarConsulta()" class="btn-primary flex-1 text-sm">
-          <i class="ti ti-device-floppy mr-1"></i>
-          Guardar
-        </button>
-        <button onclick="cerrarModal()" class="btn-secondary flex-1 text-sm">
-          Cancelar
-        </button>
-      </div>
-
     </div>
-  </div><!--fin modal-->
+    <!--fin modal-->
 
-  <script src="/js/reveal.js"></script>
-  <script src="/js/consultas.js"></script>
-</body>
+    <script src="/js/reveal.js"></script>
+    <script src="/js/consultas.js"></script>
+  </body>
 </html>

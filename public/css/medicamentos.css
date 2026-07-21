@@ -71,8 +71,6 @@
 
 /* --- tarjeta de medicamento --- */
 .med-card {
-    background: #f0ab944e;
-    border: 1px solid #D4B8E8;
     border-radius: 1rem;
     padding: 1.1rem 1.25rem;
     display: flex;
@@ -80,6 +78,80 @@
     gap: 0.6rem;
     transition: box-shadow 0.2s, transform 0.2s;
 }
+/* --- paleta pastel para tarjetas de medicamentos --- */
+
+.pastel-rosa {
+    background: #fae0eaec;
+    border: 1px solid #f7b6cf;
+}
+.pastel-rosa .titulo-medicamento,
+.pastel-rosa .icono-medicamento {
+    color: #d85d8f;
+}
+
+.pastel-durazno {
+    background: #fcead7dd;
+    border: 1px solid #f5c08c;
+}
+.pastel-durazno .titulo-medicamento,
+.pastel-durazno .icono-medicamento {
+    color: #e28a3f;
+}
+
+.pastel-verde {
+    background: #ddf6dddd;
+    border: 1px solid #b6ddb6;
+}
+.pastel-verde .titulo-medicamento,
+.pastel-verde .icono-medicamento {
+    color: #4c9a4c;
+}
+
+.pastel-lila {
+    background: #ece3fb;
+    border: 1px solid #d8c0ff;
+}
+.pastel-lila .titulo-medicamento,
+.pastel-lila .icono-medicamento {
+    color: #9b5de5;
+}
+
+.pastel-celeste {
+    background: #d7e5f6c9;
+    border: 1px solid #bfd8ff;
+}
+.pastel-celeste .titulo-medicamento,
+.pastel-celeste .icono-medicamento {
+    color: #5c8cff;
+}
+
+.pastel-turquesa {
+    background: #d5f5f5e1;
+    border: 1px solid #b7e8e8;
+}
+.pastel-turquesa .titulo-medicamento,
+.pastel-turquesa .icono-medicamento {
+    color: #2a9da7;
+}
+
+.pastel-amarillo {
+    background: #f7f4d7;
+    border: 1px solid #f5e6a0;
+}
+.pastel-amarillo .titulo-medicamento,
+.pastel-amarillo .icono-medicamento {
+    color: #c5a000;
+}
+
+.pastel-lavanda {
+    background: #faf3ff;
+    border: 1px solid #dfc1ff;
+}
+.pastel-lavanda .titulo-medicamento,
+.pastel-lavanda .icono-medicamento {
+    color: #aa66dd;
+}
+
 .med-card:hover {
     box-shadow: 0 4px 16px rgba(179, 143, 209, 0.20);
     transform: translateY(-2px);

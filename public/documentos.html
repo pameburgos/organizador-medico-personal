@@ -21,39 +21,39 @@
     <div class="flex min-h-screen">
     <!--barra lateral-->
     <aside
-        class="w-48 flex-shrink-0 bg-red-100 border-r border-red-200 flex flex-col py-6"
+        class="w-64 flex-shrink-0 bg-red-100 border-r border-red-200 flex flex-col py-6"
     >
         <div class="px-5 pb-5 mb-4 border-b border-red-200">
         <h1 class="text-base font-semibold text-pink-700">Organizador</h1>
         </div>
 
         <nav class="flex flex-col gap-1">
-        <a href="dashboard.html" class="nav-link">
+        <a href="dashboard.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-layout-dashboard"></i>
             General
         </a>
 
-        <a href="especialidades.html" class="nav-link">
+        <a href="especialidades.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-stethoscope"></i>
             Especialidades
         </a>
 
-        <a href="consultas.html" class="nav-link">
+        <a href="consultas.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-calendar-event"></i>
             Consultas
         </a>
 
-        <a href="documentos.html" class="nav-link active">
+        <a href="documentos.html" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-file-description"></i>
             Documentos
         </a>
 
-        <a href="medicamentos.html" class="nav-link">
+        <a href="medicamentos.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-pill"></i>
             Medicamentos
         </a>
 
-        <a href="alertas.html" class="nav-link">
+        <a href="alertas.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
             <i class="ti ti-bell"></i>
             Alertas
         </a>
@@ -67,8 +67,8 @@
         class="bg-red-100 border-b border-red-200 px-6 py-4 flex items-center justify-between"
         >
         <div>
-            <h2 class="text-lg font-semibold text-pink-800">Pamela Burgos</h2>
-            <span class="text-sm text-pink-500"
+            <h2 class="text-xl font-semibold text-pink-800">Pamela Burgos</h2>
+            <span class="text-base text-pink-500"
             >Organizador Médico Personal</span
             >
         </div>
@@ -80,12 +80,12 @@
         <div class="reveal flex items-center justify-between">
             <div>
             <h2
-                class="text-base font-semibold text-teal-800 flex items-center gap-2"
+                class="text-2xl font-semibold text-teal-800 flex items-center gap-2"
             >
                 <i class="ti ti-file-description text-teal-500"></i>
                 Documentos e Historial
             </h2>
-            <p class="text-xs text-teal-600 mt-0.5">
+            <p class="text-base text-teal-600 mt-0.5">
                 Recetas, indicaciones, estudios y todo tu historial médico
             </p>
             </div>
@@ -133,35 +133,35 @@
             <div class="flex gap-2 flex-wrap">
             <button
                 onclick="filtrarTipo('todos')"
-                class="filtro-btn active"
+                class="filtro-btn active text-base"
                 id="f-todos"
             >
                 <i class="ti ti-files"></i> Todos
             </button>
             <button
                 onclick="filtrarTipo('Receta')"
-                class="filtro-btn"
+                class="filtro-btn text-base"
                 id="f-Receta"
             >
                 <i class="ti ti-prescription"></i> Recetas
             </button>
             <button
                 onclick="filtrarTipo('Indicacion')"
-                class="filtro-btn"
+                class="filtro-btn text-base"
                 id="f-Indicacion"
             >
                 <i class="ti ti-clipboard-text"></i> Indicaciones
             </button>
             <button
                 onclick="filtrarTipo('Estudio')"
-                class="filtro-btn"
+                class="filtro-btn text-base"
                 id="f-Estudio"
             >
                 <i class="ti ti-microscope"></i> Estudios
             </button>
             <button
                 onclick="filtrarTipo('Otro')"
-                class="filtro-btn"
+                class="filtro-btn text-base"
                 id="f-Otro"
             >
                 <i class="ti ti-file"></i> Otros
@@ -200,8 +200,8 @@
     <div class="modal" id="modal">
     <div class="modal-content">
         <div class="flex items-center justify-between mb-5">
-        <h3 class="text-base font-semibold text-teal-700" id="modalTitulo">
-            Subir documento
+        <h3 class="text-xl font-semibold text-teal-700" id="modalTitulo">
+            Subir Documento
         </h3>
         <button
             onclick="cerrarModal()"
@@ -213,7 +213,7 @@
 
         <!--zona de archivo (solo al crear, no al editar)-->
         <div class="campo-grupo" id="grupoArchivo">
-          <label class="campo-label">Archivo *</label>
+          <label class="campo-label text-base">Archivo *</label>
         <div
             class="dropzone"
             id="dropzone"
@@ -249,7 +249,7 @@
 
         <!--tipo de documento-->
         <div class="campo-grupo">
-          <label class="campo-label">Tipo de documento *</label>
+          <label class="campo-label text-base">Tipo de documento *</label>
         <select id="inpTipo" class="form-input">
             <option value="Receta">Receta</option>
             <option value="Indicacion">Indicación médica</option>
@@ -260,7 +260,7 @@
 
         <!--especialidad-->
         <div class="campo-grupo">
-        <label class="campo-label">Especialidad</label>
+        <label class="campo-label text-base">Especialidad</label>
         <select id="inpEspecialidad" class="form-input">
             <option value="">General / sin especialidad</option>
         </select>
@@ -268,7 +268,7 @@
 
         <!--titulo-->
         <div class="campo-grupo">
-          <label class="campo-label">Título *</label>
+          <label class="campo-label text-base">Título *</label>
         <input
             id="inpTitulo"
             type="text"
@@ -280,13 +280,13 @@
 
         <!--fecha del documento-->
         <div class="campo-grupo">
-        <label class="campo-label">Fecha del documento</label>
+        <label class="campo-label text-base">Fecha del documento</label>
         <input id="inpFecha" type="date" class="form-input" />
         </div>
 
         <!--descripcion-->
         <div class="campo-grupo">
-        <label class="campo-label">Descripción</label>
+        <label class="campo-label text-base">Descripción</label>
         <textarea
             id="inpDescripcion"
             class="form-input"

@@ -1,26 +1,26 @@
-const express       = require('express');
-const router        = express.Router();
+const express = require('express');
+const router = express.Router();
 const getConnection = require('../db');
-const oracledb      = require('oracledb');
-const nodemailer    = require('nodemailer');//libreria para enviar correos desde node.js
-const cron          = require('node-cron');//permite programar tareas automaticas
+const oracledb = require('oracledb');
+const nodemailer = require('nodemailer');//libreria para enviar correos desde node.js
+const cron = require('node-cron');//permite programar tareas automaticas
 
 //configuracion del gmail
 const transporter = nodemailer.createTransport({//config la conexion segura con los servidores de gmail
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS 
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
 //funcion enviar gmail
 async function enviarEmail(destinatario, asunto, cuerpo) {
     await transporter.sendMail({
-        from:    `"Organizador Médico" <${process.env.EMAIL_USER}>`,
-        to:      destinatario,
+        from: `"Organizador Médico" <${process.env.EMAIL_USER}>`,
+        to: destinatario,
         subject: asunto,
-        html:    cuerpo
+        html: cuerpo
     });
 }
 
@@ -36,7 +36,7 @@ async function registrarHistorial(conn, id_alerta, descripcion, exitoso) {
 
 // cron: enviar alertas cada hora
 // Busca alertas activas cuyo proximo_envio ya llegó y las envía
-cron.schedule('0 * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
     console.log('[Alertas] Revisando alertas pendientes…');
     let conn;
     try {
@@ -44,9 +44,11 @@ cron.schedule('0 * * * *', async () => {
 
         // alertas de MEDICACION con proximo_envio vencido
         const resMed = await conn.execute(
-            `SELECT a.id_alerta, a.destinatario, a.descripcion, a.nombre_med,
+            `SELECT a.id_alerta, a.destinatario, a.descripcion, a.id_medicamento,
+                    m.nombre as nombre_med,
                     a.frecuencia_hs, a.proximo_envio
             FROM alertas a
+            left join medicamentos m on m.id_medicamento = a.id_medicamento
             WHERE a.tipo   = 'medicacion'
                 AND a.activa = 1
                 AND a.proximo_envio <= SYSTIMESTAMP`,
@@ -56,14 +58,12 @@ cron.schedule('0 * * * *', async () => {
 
         for (const a of resMed.rows) {
             try {
-                const nombre = a.NOMBRE_MED || 'tu medicamento';
-                const desc   = a.DESCRIPCION ? `<p>${a.DESCRIPCION}</p>` : '';
+                const nombre = a.DESCRIPCION || a.NOMBRE_MED || 'tu medicamento';
                 await enviarEmail(
                     a.DESTINATARIO,
                     `💊 Recordatorio: ${nombre}`,
                     `<h2 style="color:#7c3aed">Recordatorio de medicación</h2>
                     <p>Es hora de tomar <strong>${nombre}</strong>.</p>
-                    ${desc}
                     <p style="color:#6b7280;font-size:12px">
                     Organizador Médico Personal de Pamela Burgos
                     </p>`
@@ -91,11 +91,11 @@ cron.schedule('0 * * * *', async () => {
 
         // alertas de CONSULTA: buscar consultas que sean mañana
         const resConsulta = await conn.execute(
-            `SELECT a.id_alerta, a.destinatario, a.descripcion, a.id_referencia,
-                    c.fecha_hora, e.nombre AS especialidad, e.nombre_doctor,
+            `SELECT a.id_alerta, a.destinatario, a.descripcion, a.ID_CONSULTA,
+                    c.fecha_hora, c.lugar, e.nombre AS especialidad, e.nombre_doctor,
                     c.motivo
             FROM alertas a
-            JOIN consultas c    ON c.id_consulta     = a.id_referencia
+            JOIN consultas c    ON c.id_consulta     = a.ID_CONSULTA
             JOIN especialidades e ON e.id_especialidad = c.id_especialidad
             WHERE a.tipo     = 'consulta'
                 AND a.activa   = 1
@@ -110,30 +110,40 @@ cron.schedule('0 * * * *', async () => {
                 const fecha = new Date(a.FECHA_HORA).toLocaleDateString('es-PY', {
                     weekday: 'long', day: 'numeric', month: 'long'
                 });
-                const hora  = new Date(a.FECHA_HORA).toLocaleTimeString('es-PY', {
+                const hora = new Date(a.FECHA_HORA).toLocaleTimeString('es-PY', {
                     hour: '2-digit', minute: '2-digit'
                 });
                 const motivo = a.MOTIVO ? `<p>Motivo: ${a.MOTIVO}</p>` : '';
+                const descripcionAlerta = a.DESCRIPCION
+                    ? `<p style="margin-top:14px;color:#4a6070">${a.DESCRIPCION}</p>`
+                    : '';
 
                 await enviarEmail(
                     a.DESTINATARIO,
                     `📅 Recordatorio: consulta mañana con ${a.ESPECIALIDAD}`,
-                    `<h2 style="color:#db2777">Recordatorio de consulta</h2>
-                    <p>Mañana tenés turno con <strong>${a.ESPECIALIDAD}</strong>.</p>
+                    `<h2 style="color:#db2777">${a.ESPECIALIDAD}</h2>
+                    <p>📍 ${a.LUGAR || 'Lugar no especificado'}</p>
+                    <p>📅 ${fecha} · 🕐 ${hora}</p>
                     <ul>
                     <li><strong>Doctor/a:</strong> ${a.NOMBRE_DOCTOR || '—'}</li>
                     <li><strong>Fecha:</strong> ${fecha}</li>
                     <li><strong>Hora:</strong> ${hora}</li>
                     </ul>
                     ${motivo}
-                    <p style="color:#6b7280;font-size:12px">
+                    ${descripcionAlerta}
+                    <p style="color:#6b7280;font-size:12px;margin-top:16px">
                     Organizador Médico Personal de Pamela Burgos
                     </p>`
                 );
 
                 await registrarHistorial(conn, a.ID_ALERTA,
                     `Recordatorio consulta ${a.ESPECIALIDAD} enviado a ${a.DESTINATARIO}`, true);
-
+                //cambia de activo a inactivo
+                await conn.execute(
+                    `UPDATE alertas SET activa = 0 WHERE id_alerta = :id`,
+                    { id: a.ID_ALERTA },
+                    { autoCommit: true }
+                );
             } catch (mailErr) {
                 console.error(`[Alertas] Error email consulta ${a.ID_ALERTA}:`, mailErr);
                 await registrarHistorial(conn, a.ID_ALERTA,
@@ -156,12 +166,14 @@ router.get('/', async (req, res) => {
     try {
         conn = await getConnection();
         const result = await conn.execute(
-            `SELECT id_alerta, tipo, id_referencia, nombre_med, descripcion,
-                    canal, destinatario, frecuencia_hs,
-                    TO_CHAR(proximo_envio, 'YYYY-MM-DD"T"HH24:MI') AS proximo_envio,
-                    activa
-            FROM alertas
-            ORDER BY fecha_creacion DESC`,
+            `SELECT a.id_alerta, a.tipo, a.ID_CONSULTA, a.id_medicamento,
+                    m.nombre as nombre_med,
+                    a.descripcion, a.canal, a.destinatario, a.frecuencia_hs,
+                    TO_CHAR(a.proximo_envio, 'YYYY-MM-DD"T"HH24:MI') AS proximo_envio,
+                    a.activa
+            FROM alertas a
+            left join medicamentos m on m.id_medicamento = a.id_medicamento
+            ORDER BY a.fecha_creacion DESC`,
             [],
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
@@ -197,8 +209,8 @@ router.get('/historial', async (req, res) => {
 
 //crea una alerta
 router.post('/', async (req, res) => {
-    const { tipo, id_referencia, nombre_med, descripcion,
-            canal, destinatario, frecuencia_hs, proximo_envio } = req.body;
+    const { tipo, ID_CONSULTA, id_medicamento, descripcion,
+        canal, destinatario, frecuencia_hs, proximo_envio } = req.body;
     //validacion inicial
     if (!tipo || !destinatario)
         return res.status(400).json({ error: 'tipo y destinatario son obligatorios' });
@@ -212,18 +224,18 @@ router.post('/', async (req, res) => {
         conn = await getConnection();
         const result = await conn.execute(
             `INSERT INTO alertas
-            (tipo, id_referencia, nombre_med, descripcion, canal,
+            (tipo, ID_CONSULTA, id_medicamento, descripcion, canal,
                 destinatario, frecuencia_hs, proximo_envio)
             VALUES
-            (:tipo, :id_referencia, :nombre_med, :descripcion, :canal,
+            (:tipo, :ID_CONSULTA, :id_medicamento, :descripcion, :canal,
                 :destinatario, :frecuencia_hs, :proximo_envio)
             RETURNING id_alerta INTO :id`,
             {
                 tipo,
-                id_referencia: id_referencia || null,
-                nombre_med:    nombre_med    || null,
-                descripcion:   descripcion   || null,
-                canal:         canal         || 'email',
+                ID_CONSULTA: ID_CONSULTA || null,
+                id_medicamento: id_medicamento || null,
+                descripcion: descripcion || null,
+                canal: canal || 'email',
                 destinatario,
                 frecuencia_hs: frecuencia_hs || 24,
                 proximo_envio: proximoTs,
@@ -293,4 +305,3 @@ router.delete('/:id', async (req, res) => {
     }
 });*/
 module.exports = router;
-

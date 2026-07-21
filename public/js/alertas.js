@@ -127,6 +127,7 @@ function renderListaAlertas(idLista, items, tipo) {
         <li class="alerta-item">
             <div class="alerta-item-info">
                 <div class="alerta-item-titulo">${tituloAlerta(a, tipo)}</div>
+                <div class="alerta-item-sub">${subtituloAlerta(a, tipo)}</div>
                 ${tipo === 'consulta' && a.DESCRIPCION ? `<div class="alerta-item-desc">${a.DESCRIPCION}</div>` : ''}
             </div>
             <span class="${a.ACTIVA ? 'badge-activa' : 'badge-inactiva'}">
@@ -157,8 +158,9 @@ function subtituloAlerta(a, tipo) {
     if (tipo === 'consulta') {
         const c = consultasCache.find(c => c.ID_CONSULTA == a.ID_CONSULTA);
         if (c) {
-            const lugar = c.LUGAR ? `📍 ${c.LUGAR} · ` : '';
-            return `${lugar}📅 ${formatearFecha(c.FECHA)} ${c.HORA} · 1 día antes`;
+            const lugar = c.LUGAR ? `${c.LUGAR} · ` : '';
+            const doctor = c.NOMBRE_DOCTOR ? ` · ${c.NOMBRE_DOCTOR}` : '';
+            return `${lugar}${formatearFecha(c.FECHA)} ${c.HORA}${doctor} · 1 día antes`;
         }
         return '1 día antes';
     }

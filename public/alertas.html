@@ -183,6 +183,7 @@
 
               <!--pestaña: pendientes, divididas por categoria-->
               <div id="tabPendientes">
+
                 <div class="grid md:grid-cols-2 gap-5">
                   <div>
                     <h4 class="tab-subtitulo"><i class="ti ti-calendar-event"></i>
@@ -192,18 +193,19 @@
                       <li class="text-xs text-center py-4 text-gray-400">Cargando…</li>
                     </ul>
                   </div>
-                </div>
-                <h4 class="tab-subtitulo"><i class="ti ti-pill"></i> 
-                  Medicación
-                </h4>
+                  <div>                              <!-- ✅ nuevo div que envuelve Medicación -->
+                    <h4 class="tab-subtitulo"><i class="ti ti-pill"></i>
+                      Medicación
+                    </h4>
                     <ul class="flex flex-col gap-2 mt-2" id="listaPendientesMedicacion">
                       <li class="text-xs text-center py-4 text-gray-400">
                         Cargando…
                       </li>
                     </ul>
+                  </div>                             <!-- ✅ cierra el div de Medicación -->
+                </div>                                <!-- ✅ ahora la grilla se cierra acá -->
               </div>
             </div>
-          </div>
 
           <!--pestaña: enviadas-->
               <div id="tabEnviadas" class="hidden">

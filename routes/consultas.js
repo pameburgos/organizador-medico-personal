@@ -109,7 +109,7 @@ router.post('/', async (req, res) => {
             `INSERT INTO consultas (id_especialidad, fecha_hora, lugar, motivo, notas_post, estado)
             VALUES (:id_especialidad,
                     TO_TIMESTAMP(:fecha_hora, 'YYYY-MM-DD HH24:MI'),
-                    :lugar, motivo, :notas_post, :estado)
+                    :lugar, :motivo, :notas_post, :estado)
             RETURNING id_consulta INTO :id`,
             {
                 id_especialidad: Number(id_especialidad),

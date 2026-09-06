@@ -7,44 +7,64 @@ document.addEventListener('DOMContentLoaded', cargarDashboard);
 
 async function cargarDashboard() {
     try {
-        const res = await fetch(API);
+        const res = await fetch('/dashboard');
+
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(
+                errorData.error || `Error HTTP ${res.status}`
+            );
+        }
+
         const data = await res.json();
 
-        document.getElementById('cantEspecialidades').textContent = data.especialidades ?? 0;
-        document.getElementById('cantConsultas').textContent = data.consultas ?? 0;
-        document.getElementById('cantMedicamentos').textContent = data.medicamentos ?? 0;
-        document.getElementById('cantAlertas').textContent = data.alertas ?? 0;
-        document.getElementById('cantDocumentos').textContent = data.documentos ?? 0;
+        console.log('Datos recibidos del dashboard:', data);
 
-        //proximas consultas
-        renderizarLista('listaProximas', data.lista_proximas, c =>
-            `${c.ESPECIALIDAD}${c.NOMBRE_DOCTOR ? ' · ' + c.NOMBRE_DOCTOR : ''} — ${c.FECHA_DISPLAY} ${c.HORA}`
+        asignarTexto('cantEspecialidades', data.especialidades);
+        asignarTexto('cantConsultas', data.consultas);
+        asignarTexto('cantDocumentos', data.documentos);
+        asignarTexto('cantMedicamentos', data.medicamentos);
+        asignarTexto('cantAlertas', data.alertas);
+
+        // Solo si posteriormente creamos la tabla/sección "otros"
+        asignarTexto('cantOtros', data.otros);
+
+        renderizarLista(
+            'listaProximas',
+            data.lista_proximas,
+            c =>
+                `${c.ESPECIALIDAD}${c.NOMBRE_DOCTOR ? ' · ' + c.NOMBRE_DOCTOR : ''} — ${c.FECHA_DISPLAY} ${c.HORA}`
         );
-        //proximas alertas
-        renderizarLista('listaProximasAlertas', data.proximas_alertas, a => {
-            let tituloAlerta = '';
 
-            if (a.NOMBRE_MED) {
-                tituloAlerta = `Medicamento: ${a.NOMBRE_MED}`;
-            } else if (a.NOMBRE_ESP) {
-                tituloAlerta = `Cita de ${a.NOMBRE_ESP}`;
-            } else {
-                tituloAlerta = a.DESCRIPCION || a.TIPO;
+        renderizarLista(
+            'listaProximasAlertas',
+            data.proximas_alertas,
+            a => {
+                let tituloAlerta = '';
+
+                if (a.NOMBRE_MED) {
+                    tituloAlerta = `Medicamento: ${a.NOMBRE_MED}`;
+                } else if (a.NOMBRE_ESP) {
+                    tituloAlerta = `Cita de ${a.NOMBRE_ESP}`;
+                } else {
+                    tituloAlerta = a.DESCRIPCION || a.TIPO;
+                }
+
+                return `${tituloAlerta} — Próximo envío: ${a.FECHA_DISPLAY}`;
             }
+        );
 
-            return `${tituloAlerta} — Próximo envío: ${a.FECHA_DISPLAY}`;
-        });
-    }catch(error){
-        console.error('Error cargando el dashboard: ', error);
+    } catch (error) {
+        console.error('Error cargando el dashboard:', error);
     }
 }
-        function renderizarLista(idLista, items, formatear) {
-            const ul = document.getElementById(idLista);
-            if (!ul) return;
 
-            if (!items || items.length === 0) {
-                ul.innerHTML = '<li class="text-gray-400">Sin datos por ahora.</li>';
-                return;
-            }
-            ul.innerHTML = items.map(item => `<li>${formatear(item)}</li>`).join('');
-        }
+function asignarTexto(id, valor) {
+    const el = document.getElementById(id);
+
+    if (el) {
+        el.textContent = valor ?? 0;
+    } else {
+        console.warn(`No se encontró el elemento HTML con el ID: ${id}`);
+    }
+}

@@ -1,7 +1,7 @@
 /*---base de toda la pagina---*/
     body {
         font-family: 'Inter', sans-serif;
-        background-color: #FFF8F5;
+        background-color: #fdf5ff;
     }
 
     /*---barra lateral izquierda---*/
@@ -79,7 +79,6 @@
     transition: box-shadow 0.2s, transform 0.2s;
 }
 /* --- paleta pastel para tarjetas de medicamentos --- */
-
 .pastel-rosa {
     background: #fae0eaec;
     border: 1px solid #f7b6cf;
@@ -338,3 +337,11 @@ select.campo-input {
     background-position: right 10px center;
     padding-right: 28px;
 }
+
+
+
+
+
+
+
+

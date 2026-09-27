@@ -82,7 +82,7 @@ function renderizarTarjetas(lista) {
                     <div class="flex items-start gap-3">
                         <span class="med-icono icono-medicamento"><i class="ti ti-pill"></i></span>
                         <div>
-                            <h4 class="font-semibold text-sm titulo-medicamento">${escapeHtml(med.NOMBRE)}</h4>
+                            <h4 class="font-semibold text-xl titulo-medicamento">${escapeHtml(med.NOMBRE)}</h4>
                             ${med.DOSIS ? `<p class="text-xs text-gray-500">${escapeHtml(med.DOSIS)}</p>` : ''}
                         </div>
                     </div>
@@ -90,17 +90,17 @@ function renderizarTarjetas(lista) {
                 </div>
 
                 ${med.FRECUENCIA ? `
-                <p class="text-xs text-gray-500 flex items-center gap-1.5">
+                <p class="text-xs text-black-500 flex items-center gap-1.5">
                     <i class="ti ti-clock text-[#CDAEE3]"></i> ${escapeHtml(med.FRECUENCIA)}
                 </p>` : ''}
 
                 ${med.INDICACION ? `
-                <p class="text-xs text-gray-500 flex items-center gap-1.5">
+                <p class="text-xs text-black-500 flex items-center gap-1.5">
                     <i class="ti ti-notes text-[#CDAEE3]"></i> ${escapeHtml(med.INDICACION)}
                 </p>` : ''}
 
                 ${(med.FECHA_INICIO || med.FECHA_FIN) ? `
-                <p class="text-xs text-gray-400 flex items-center gap-1.5">
+                <p class="text-xs text-black-400 flex items-center gap-1.5">
                     <i class="ti ti-calendar text-[#CDAEE3]"></i>
                     ${med.FECHA_INICIO ? formatearFecha(med.FECHA_INICIO) : '—'}
                     ${med.FECHA_FIN ? ' → ' + formatearFecha(med.FECHA_FIN) : ''}

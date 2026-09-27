@@ -1,3 +1,4 @@
 alerta.env
 node_modules/
 uploads/
+*.env

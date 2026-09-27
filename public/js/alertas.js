@@ -244,10 +244,10 @@ async function guardarAlerta() {
         fecha_fin.setDate(fecha_fin.getDate() + dias);
 
         body = {
-            tipo,
+            tipo,  
             ID_CONSULTA: null,
             descripcion: desc ? `${nombre} — ${desc}` : nombre,
-            id_medicamento: null,
+            ID_MEDICAMENTO: null,
             canal: 'email',
             destinatario: dest,
             frecuencia_hs: frec,

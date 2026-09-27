@@ -4,6 +4,10 @@ const getConnection = require('../db');
 const oracledb = require('oracledb');
 const nodemailer = require('nodemailer');//libreria para enviar correos desde node.js
 const cron = require('node-cron');//permite programar tareas automaticas
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+console.log("Probando .env -> Correo:", process.env.EMAIL_USER);
+
 
 //configuracion del gmail
 const transporter = nodemailer.createTransport({//config la conexion segura con los servidores de gmail
@@ -49,7 +53,7 @@ cron.schedule('*/15 * * * *', async () => {
                     a.frecuencia_hs, a.proximo_envio
             FROM alertas a
             left join medicamentos m on m.id_medicamento = a.id_medicamento
-            WHERE a.tipo   = 'medicacion'
+            WHERE a.tipo   = 'Medicamento'
                 AND a.activa = 1
                 AND a.proximo_envio <= SYSTIMESTAMP`,
             [],
@@ -233,7 +237,7 @@ router.post('/', async (req, res) => {
             {
                 tipo,
                 ID_CONSULTA: ID_CONSULTA || null,
-                id_medicamento: id_medicamento || null,
+                id_medicamento: id_medicamento || 1,
                 descripcion: descripcion || null,
                 canal: canal || 'email',
                 destinatario,

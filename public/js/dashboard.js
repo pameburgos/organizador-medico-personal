@@ -68,3 +68,33 @@ function asignarTexto(id, valor) {
         console.warn(`No se encontró el elemento HTML con el ID: ${id}`);
     }
 }
+
+function renderizarLista(id, items, formatear) {
+    const lista = document.getElementById(id);
+
+    if (!lista) {
+        console.warn(`No se encontró la lista: ${id}`);
+        return;
+    }
+
+    lista.innerHTML = '';
+
+    if (!items || items.length === 0) {
+        const li = document.createElement('li');
+        li.className = 'text-gray-400';
+        li.textContent = 'No hay registros próximos.';
+        lista.appendChild(li);
+        return;
+    }
+
+    items.forEach(item => {
+        const li = document.createElement('li');
+
+        li.className =
+            'border-b border-pink-100 pb-2 last:border-b-0';
+
+        li.textContent = formatear(item);
+
+        lista.appendChild(li);
+    });
+}

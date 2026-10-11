@@ -13,16 +13,16 @@
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
     />
     <!--mi css-->
-    <link rel="stylesheet" href="/css/alertas.css" />
+    <link rel="stylesheet" href="css/alertas.css" />
   </head>
 
   <body class="min-h-screen">
     <div class="flex min-h-screen">
 
       <!--barra lateral-->
-      <aside class="w-64 flex-shrink-0 bg-sky-100 border-r border-sky-200 flex flex-col py-6">
-        <div class="px-5 pb-5 mb-4 border-b border-sky-200">
-          <h1 class="text-base font-semibold text-pink-700">Organizador</h1>
+      <aside class="w-64 flex-shrink-0 bg-emerald-100 border-r border-emerald-300 flex flex-col py-6">
+        <div class="px-5 pb-5 mb-4 border-b border-emerald-300">
+          <h1 class="text-xl font-semibold text-base text-emerald-800">Pamela Burgos</h1>
         </div>
 
         <nav class="flex flex-col gap-1">
@@ -62,12 +62,12 @@
       <div class="flex-1 flex flex-col">
 
         <!--barra superior o topbar-->
-        <div class="bg-sky-100 border-b border-sky-200 px-6 py-4 flex items-center justify-between">
+        <div class="bg-emerald-100 border-b border-emerald-300 px-6 py-6 flex items-center justify-between">
           <div>
-            <h2 class="text-xl font-semibold text-sky-800">
-              Pamela Burgos
+            <h2 class="text-3xl font-semibold text-emerald-800">
+              Organizador Médico Personal
             </h2>
-            <span class="text-base text-sky-500">Organizador Médico Personal</span>
+            <!--<span class="text-base text-sky-500">Organizador Médico Personal</span>-->
           </div>
           <i class="ti ti-heart text-sky-400 text-xl"></i>
         </div>
@@ -75,32 +75,35 @@
         <main class="p-6 flex flex-col gap-6">
 
           <!--encabezado de seccion-->
-          <div class="reveal flex items-center justify-between">
+          <div class="reveal flex items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-semibold text-sky-800 flex items-center gap-2">
-                <i class="ti ti-bell text-sky-400"></i>
+              <h2 class="text-3xl font-semibold text-emerald-800 flex items-center gap-2">
+                <i class="ti ti-bell text-emerald-800"></i>
                 Alertas
               </h2>
-              <p class="text-base text-sky-500 mt-0.5">Recordatorios por email para consultas y medicamentos</p>
+              <p class="text-base text-gray-500 mt-0.5">Recordatorios por email para consultas y medicamentos</p>
             </div>
-            <button onclick="abrirModalConfigEmail()"
-              class="btn-primary flex items-center gap-2 text-sm">
-              <i class="ti ti-settings"></i>
-              Configurar email
-            </button>
+            
+
+            <div class="flex items-center shrink-0">
+                <div class="reveal bg-white border border-emerald-600 rounded-2xl px-4 py-4 flex items-center gap-3" id="bannerEmail">
+                  <i class="ti ti-mail text-emerald-800"></i>
+                    <span class="text-sm text-gray-600">
+                      Los recordatorios se enviarán a
+                        <strong id="emailMostrado">—</strong>
+                    </span>
+                  
+                  <button onclick="abrirModalConfigEmail()"
+                    class="btn-primary flex items-center gap-2 text-sm">
+                      <i class="ti ti-settings"></i>
+                      Configurar email
+                  </button>
+                </div>
+            </div>
           </div>
 
           <!--banner de email configurado-->
-          <div class="reveal bg-white border border-sky-200 rounded-2xl px-5 py-4 flex items-center gap-3" id="bannerEmail">
-            <i class="ti ti-mail text-sky-500"></i>
-            <span class="text-sm text-gray-600">
-              Los recordatorios se enviarán a
-              <strong id="emailMostrado">—</strong>
-            </span>
-            <button onclick="abrirModalConfigEmail()" class="text-xs text-sky-600 underline ml-auto">
-              Cambiar
-            </button>
-          </div>
+          
 
           <!--aviso si falta configurar email-->
           <div class="reveal bg-yellow-50 border border-yellow-200 rounded-2xl px-5 py-4 flex items-center gap-3 hidden" id="avisoSinEmail">
@@ -124,7 +127,7 @@
                     <h3 class="text-xl font-semibold text-gray-700">
                       Recordatorios de Consultas
                     </h3>
-                    <p class="text-sm text-gray-600">
+                    <p class="text-base text-gray-600">
                       Programar al menos 24 hs antes de la Consulta
                     </p>
                   </div>
@@ -151,7 +154,7 @@
                     <h3 class="text-xl font-semibold text-gray-700">
                       Recordatorios de Medicación
                     </h3>
-                    <p class="text-sm text-gray-600">
+                    <p class="text-base text-gray-600">
                       Recordatorios periódicos para tus medicamentos
                     </p>
                   </div>
@@ -170,7 +173,7 @@
 
           <!--vista de alertas: pendientes y enviadas-->
           <div class="reveal">
-            <div class="bg-white border border-sky-200 rounded-2xl p-5">
+            <div class="bg-white border border-emerald-600 rounded-2xl p-5">
 
               <div class="flex items-center mb-4 border-b border-sand-200">
                 <button type="button" class="tab-btn tab-activo" id="tabBtnPendientes" onclick="cambiarTabAlertas('pendientes')">
@@ -193,7 +196,7 @@
                       <li class="text-xs text-center py-4 text-gray-400">Cargando…</li>
                     </ul>
                   </div>
-                  <div>                              <!-- ✅ nuevo div que envuelve Medicación -->
+                  <div>                              <!-- nuevo div que envuelve Medicación -->
                     <h4 class="tab-subtitulo"><i class="ti ti-pill"></i>
                       Medicación
                     </h4>
@@ -202,8 +205,8 @@
                         Cargando…
                       </li>
                     </ul>
-                  </div>                             <!-- ✅ cierra el div de Medicación -->
-                </div>                                <!-- ✅ ahora la grilla se cierra acá -->
+                  </div>                             <!-- cierra el div de Medicación -->
+                </div>                                <!-- ahora la grilla se cierra acá -->
               </div>
             </div>
 
@@ -228,10 +231,10 @@
       <div class="modal-content">
 
         <div class="flex items-center justify-between mb-5">
-          <h3 class="text-base font-semibold text-sky-700">
+          <h3 class="text-base font-semibold text-emerald-800">
             Configurar email
           </h3>
-          <button onclick="cerrarModalEmail()" class="text-gray-400 hover:text-gray-600">
+          <button onclick="cerrarModalEmail()" class="text-emerald-400 hover:text-gray-600">
             <i class="ti ti-x text-lg"></i>
           </button>
         </div>
@@ -341,7 +344,7 @@
       </div>
     </div><!--fin modal alerta-->
 
-    <script src="/js/reveal.js"></script>
-    <script src="/js/alertas.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="js/alertas.js"></script>
   </body>
 </html>

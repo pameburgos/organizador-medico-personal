@@ -151,7 +151,7 @@ function tituloAlerta(a, tipo) {
         const c = consultasCache.find(c => c.ID_CONSULTA == a.ID_CONSULTA);
         return c ? c.NOMBRE_ESPECIALIDAD : `Consulta #${a.ID_CONSULTA}`;
     }
-    return a.DESCRIPCION || 'Medicamento';
+    return a.DESCRIPCION || 'medicacion';
 }
 //esta funcion construye el pequeño texto debajo del titulo
 function subtituloAlerta(a, tipo) {

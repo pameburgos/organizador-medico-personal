@@ -308,8 +308,14 @@ td { padding: 9px 6px; vertical-align: middle; }
 }
 
 /* --- campos de formulario --- */
-.campo-grupo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
-.campo-label { font-size: 12px; font-weight: 600; color: var(#5A3E87); letter-spacing: 0.03em;
+.campo-grupo { display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+    margin-bottom: 14px; }
+.campo-label { font-size: 12px; 
+    font-weight: 600; 
+    color: var(#5A3E87); 
+    letter-spacing: 0.03em;
     text-transform: uppercase;}
 .campo-input {
     width: 100%;

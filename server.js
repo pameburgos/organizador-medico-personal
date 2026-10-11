@@ -20,6 +20,11 @@ app.use('/documentos', require('./routes/documentos'));
 app.use('/alertas', require('./routes/alertas'));
 app.use('/medicamentos', require('./routes/medicamentos'));
 
+
+//manejador de errores global
+app.use((err, req, res, next) => { console.error(err); res.status(500).json({ error: err.message }); });
+
+
 //encendido del servidor
 app.listen(3000, () => {
     console.log('Servidor ejecutándose en puerto 3000');

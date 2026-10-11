@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
+    --emerald-800: #065146;
+    --emerald-200: #a7f3d0;
+
     --sky-50: #edf6fd;
     --sky-100: #cce8f8;
     --sky-200: #a4d4f2;
@@ -42,7 +45,7 @@ body {
     gap: 8px;
     padding: 10px 20px;
     font-size: 14px;
-    color: var(--sky-800);
+    color: var(--emerald-800);
     text-decoration: none;
     transition: background 0.15s;
 }
@@ -50,8 +53,8 @@ body {
 /*cuando pasa el mouse encima*/
 .nav-link:hover,
 .nav-link.active {
-    background-color: #a4d4f2;
-    color: #0f3a57;
+    background-color: #a7f3d0;
+    color: #065146;
 }
 
 .reveal {
@@ -354,7 +357,7 @@ body {
 
 .btn-config {
     background: white;
-    color: var(--sky-800);
+    color: var(--emerald-800);
     border: 1px solid var(--sky-200);
     border-radius: 11px;
     padding: 7px 15px;

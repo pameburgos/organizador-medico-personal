@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');//libreria para enviar correos desde no
 const cron = require('node-cron');//permite programar tareas automaticas
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-console.log("Probando .env -> Correo:", process.env.EMAIL_USER);
+//console.log("Probando .env -> Correo:", process.env.EMAIL_USER);
 
 
 //configuracion del gmail
@@ -38,7 +38,7 @@ async function registrarHistorial(conn, id_alerta, descripcion, exitoso) {
     );
 }
 
-// cron: enviar alertas cada hora
+// cron: enviar alertas cada 15 minutos
 // Busca alertas activas cuyo proximo_envio ya llegó y las envía
 cron.schedule('*/15 * * * *', async () => {
     console.log('[Alertas] Revisando alertas pendientes…');
@@ -48,21 +48,19 @@ cron.schedule('*/15 * * * *', async () => {
 
         // alertas de MEDICACION con proximo_envio vencido
         const resMed = await conn.execute(
-            `SELECT a.id_alerta, a.destinatario, a.descripcion, a.id_medicamento,
-                    m.nombre as nombre_med,
-                    a.frecuencia_hs, a.proximo_envio
-            FROM alertas a
-            left join medicamentos m on m.id_medicamento = a.id_medicamento
-            WHERE a.tipo   = 'Medicamento'
-                AND a.activa = 1
-                AND a.proximo_envio <= SYSTIMESTAMP`,
-            [],
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
-        );
+    `SELECT a.id_alerta, a.destinatario, a.descripcion,
+            a.frecuencia_hs, a.proximo_envio
+    FROM alertas a
+    WHERE a.tipo   = 'medicacion'
+        AND a.activa = 1
+        AND a.proximo_envio <= SYSTIMESTAMP`,
+    [],
+    { outFormat: oracledb.OUT_FORMAT_OBJECT }
+);
 
         for (const a of resMed.rows) {
             try {
-                const nombre = a.DESCRIPCION || a.NOMBRE_MED || 'tu medicamento';
+                const nombre = a.DESCRIPCION || 'tu medicamento';
                 await enviarEmail(
                     a.DESTINATARIO,
                     `💊 Recordatorio: ${nombre}`,
@@ -170,13 +168,11 @@ router.get('/', async (req, res) => {
     try {
         conn = await getConnection();
         const result = await conn.execute(
-            `SELECT a.id_alerta, a.tipo, a.ID_CONSULTA, a.id_medicamento,
-                    m.nombre as nombre_med,
+            `SELECT a.id_alerta, a.tipo, a.ID_CONSULTA,
                     a.descripcion, a.canal, a.destinatario, a.frecuencia_hs,
                     TO_CHAR(a.proximo_envio, 'YYYY-MM-DD"T"HH24:MI') AS proximo_envio,
                     a.activa
             FROM alertas a
-            left join medicamentos m on m.id_medicamento = a.id_medicamento
             ORDER BY a.fecha_creacion DESC`,
             [],
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -213,14 +209,12 @@ router.get('/historial', async (req, res) => {
 
 //crea una alerta
 router.post('/', async (req, res) => {
-    const { tipo, ID_CONSULTA, id_medicamento, descripcion,
+    const { tipo, ID_CONSULTA, descripcion,
         canal, destinatario, frecuencia_hs, proximo_envio } = req.body;
     //validacion inicial
     if (!tipo || !destinatario)
         return res.status(400).json({ error: 'tipo y destinatario son obligatorios' });
 
-    // Para consultas: el proximo_envio lo calculamos en el cron (compara con mañana).
-    // Para medicacion: lo recibimos del frontend.
     const proximoTs = proximo_envio ? new Date(proximo_envio) : null;
 
     let conn;
@@ -228,16 +222,15 @@ router.post('/', async (req, res) => {
         conn = await getConnection();
         const result = await conn.execute(
             `INSERT INTO alertas
-            (tipo, ID_CONSULTA, id_medicamento, descripcion, canal,
+            (tipo, ID_CONSULTA, descripcion, canal,
                 destinatario, frecuencia_hs, proximo_envio)
             VALUES
-            (:tipo, :ID_CONSULTA, :id_medicamento, :descripcion, :canal,
+            (:tipo, :ID_CONSULTA, :descripcion, :canal,
                 :destinatario, :frecuencia_hs, :proximo_envio)
             RETURNING id_alerta INTO :id`,
             {
                 tipo,
                 ID_CONSULTA: ID_CONSULTA || null,
-                id_medicamento: id_medicamento || 1,
                 descripcion: descripcion || null,
                 canal: canal || 'email',
                 destinatario,

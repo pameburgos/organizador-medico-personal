@@ -59,11 +59,11 @@ router.get("/", async (req, res) => {
             FROM alertas a
 
             LEFT JOIN medicamentos m
-            ON m.id_medicamento = a.id_referencia
+            ON m.id_medicamento = a.id_consulta
             AND a.tipo = 'Medicamento'
 
             LEFT JOIN consultas c
-            ON c.id_consulta = a.id_referencia
+            ON c.id_consulta = a.id_consulta
             AND a.tipo = 'Consulta'
 
             LEFT JOIN especialidades e

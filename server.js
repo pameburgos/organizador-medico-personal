@@ -2,6 +2,7 @@
 
 //permite ocultar datos sensibles 
 require('dotenv').config({ path: './alerta.env' });
+require('dotenv').config({ path: './.env' });
 
 //inicializacion de Express
 const express = require('express');

@@ -3,11 +3,26 @@ const router        = express.Router();
 const getConnection = require('../db');
 const oracledb      = require('oracledb');
 
-//lista todas las consultas con o sin filtro
+// Lista todas las consultas con o sin filtro de año/mes
 router.get('/', async (req, res) => {
     let conn;
     try {
         conn = await getConnection();
+
+        // REQUERIMIENTO: Cuando pasa la fecha registrada como próxima, pasa automáticamente a 'Realizada'
+        try {
+            await conn.execute(
+                `UPDATE consultas
+                 SET estado = 'Realizada'
+                 WHERE estado = 'Programada'
+                   AND fecha_hora < SYSTIMESTAMP`,
+                [],
+                { autoCommit: true }
+            );
+        } catch (updateErr) {
+            console.warn('[Consultas] Advertencia en auto-actualización de estado:', updateErr.message);
+        }
+
         const { anio, mes } = req.query;
         let sql, params;
 
@@ -27,7 +42,7 @@ router.get('/', async (req, res) => {
                     JOIN especialidades e ON e.id_especialidad = c.id_especialidad
                     WHERE EXTRACT(YEAR  FROM c.fecha_hora) = :anio
                     AND EXTRACT(MONTH FROM c.fecha_hora) = :mes
-                    ORDER BY c.fecha_hora ASC`;
+                    ORDER BY c.fecha_hora DESC`;
             params = { anio: Number(anio), mes: Number(mes) };
         } else {
             sql = `
@@ -43,7 +58,7 @@ router.get('/', async (req, res) => {
                     c.estado
                 FROM consultas c
                 JOIN especialidades e ON e.id_especialidad = c.id_especialidad
-                ORDER BY c.fecha_hora ASC`;
+                ORDER BY c.fecha_hora DESC`;
             params = [];
         }
 
@@ -59,7 +74,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-//obtiene una sola consulta - filtra la consulta
+// Obtiene una sola consulta
 router.get('/:id', async (req, res) => {
     let conn;
     try {
@@ -92,15 +107,18 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-//crear una nueva consulta
+// Crear una nueva consulta
 router.post('/', async (req, res) => {
     const { id_especialidad, fecha, hora, lugar, motivo, notas_post, estado } = req.body;
 
     if (!id_especialidad || !fecha || !hora)
         return res.status(400).json({ error: 'La especialidad, fecha y hora son obligatorias' });
 
-    // Armar timestamp: "YYYY-MM-DD HH24:MI"
     const fechaHoraStr = `${fecha} ${hora}`;
+
+    // Determinar estado inicial: si la fecha ya pasó, guardar como 'Realizada'
+    const fechaHoraParsed = new Date(`${fecha}T${hora}:00`);
+    const estadoFinal = estado || (fechaHoraParsed < new Date() ? 'Realizada' : 'Programada');
 
     let conn;
     try {
@@ -117,7 +135,7 @@ router.post('/', async (req, res) => {
                 lugar:           lugar      || null,
                 motivo:          motivo     || null,
                 notas_post:      notas_post || null,
-                estado:          estado     || 'Programada',
+                estado:          estadoFinal,
                 id: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
             },
             { autoCommit: true }
@@ -134,7 +152,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-//actualiza una consulta existente
+// Actualiza una consulta existente
 router.put('/:id', async (req, res) => {
     const { id_especialidad, fecha, hora, lugar, motivo, notas_post, estado } = req.body;
 
@@ -142,6 +160,8 @@ router.put('/:id', async (req, res) => {
         return res.status(400).json({ error: 'La especialidad, fecha y hora son obligatorias' });
 
     const fechaHoraStr = `${fecha} ${hora}`;
+    const fechaHoraParsed = new Date(`${fecha}T${hora}:00`);
+    const estadoFinal = estado || (fechaHoraParsed < new Date() ? 'Realizada' : 'Programada');
 
     let conn;
     try {
@@ -161,7 +181,7 @@ router.put('/:id', async (req, res) => {
                 lugar:           lugar      || null,
                 motivo:          motivo     || null,
                 notas_post:      notas_post || null,
-                estado:          estado     || 'Programada',
+                estado:          estadoFinal,
                 id:              Number(req.params.id)
             },
             { autoCommit: true }
@@ -177,7 +197,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-//eliminación
+// Eliminar consulta
 router.delete('/:id', async (req, res) => {
     let conn;
     try {

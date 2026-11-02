@@ -235,6 +235,79 @@
       </div>
     </div>
 
+    <!-- Modal Historial Médico Completo del Especialista (Consultas, Estudios, Medicamentos) -->
+    <div id="modal-historial-overlay" class="modal" onclick="cerrarHistorialFuera(event)" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);z-index:60;align-items:center;justify-content:center;padding:1rem;">
+      <div class="modal-content max-w-2xl w-full max-h-[88vh] flex flex-col p-6 rounded-2xl bg-white shadow-2xl border border-pink-100 overflow-hidden" onclick="event.stopPropagation()">
+        
+        <!-- Header del Modal -->
+        <div class="flex items-start justify-between pb-4 border-b border-gray-100">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5">
+              <span id="historial-icono" class="w-9 h-9 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center text-xl shrink-0">
+                <i class="ti ti-stethoscope"></i>
+              </span>
+              <div>
+                <h3 id="historial-especialidad" class="text-xl font-bold text-gray-800">Especialidad</h3>
+                <p id="historial-doctor" class="text-sm font-semibold text-pink-700">Dr/a: —</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
+              <span id="historial-centro" class="flex items-center gap-1"><i class="ti ti-building-hospital text-pink-500"></i> —</span>
+              <span id="historial-tel" class="flex items-center gap-1"><i class="ti ti-phone text-pink-500"></i> —</span>
+            </div>
+          </div>
+          <button onclick="cerrarHistorialModal()" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg text-lg">
+            <i class="ti ti-x"></i>
+          </button>
+        </div>
+
+        <!-- Pestañas de Navegación del Historial -->
+        <div class="flex border-b border-gray-200 mt-2 text-xs font-semibold gap-1">
+          <button id="tabBtnConsultas" onclick="cambiarTabHistorial('consultas')" class="tab-btn tab-activo py-2 px-3 flex items-center gap-1.5 cursor-pointer border-b-2 border-pink-600 text-pink-800">
+            <i class="ti ti-calendar-event"></i> Consultas (<span id="countHistConsultas">0</span>)
+          </button>
+          <button id="tabBtnDocumentos" onclick="cambiarTabHistorial('documentos')" class="tab-btn py-2 px-3 flex items-center gap-1.5 cursor-pointer text-gray-500 hover:text-gray-800 border-b-2 border-transparent">
+            <i class="ti ti-file-text"></i> Estudios y Documentos (<span id="countHistDocumentos">0</span>)
+          </button>
+          <button id="tabBtnMedicamentos" onclick="cambiarTabHistorial('medicamentos')" class="tab-btn py-2 px-3 flex items-center gap-1.5 cursor-pointer text-gray-500 hover:text-gray-800 border-b-2 border-transparent">
+            <i class="ti ti-pill"></i> Medicamentos (<span id="countHistMedicamentos">0</span>)
+          </button>
+        </div>
+
+        <!-- Contenido Dinámico de las Pestañas -->
+        <div class="flex-1 overflow-y-auto py-3 space-y-3 min-h-[220px]">
+          <!-- Pestaña 1: Consultas -->
+          <div id="tabHistorialConsultas" class="space-y-2.5">
+            <ul id="listaHistorialConsultas" class="space-y-2.5 text-xs">
+              <li class="text-gray-400 text-center py-6">Cargando consultas...</li>
+            </ul>
+          </div>
+
+          <!-- Pestaña 2: Estudios y Documentos -->
+          <div id="tabHistorialDocumentos" class="space-y-2.5 hidden">
+            <ul id="listaHistorialDocumentos" class="space-y-2.5 text-xs">
+              <li class="text-gray-400 text-center py-6">Cargando documentos...</li>
+            </ul>
+          </div>
+
+          <!-- Pestaña 3: Medicamentos y Tratamientos -->
+          <div id="tabHistorialMedicamentos" class="space-y-2.5 hidden">
+            <ul id="listaHistorialMedicamentos" class="space-y-2.5 text-xs">
+              <li class="text-gray-400 text-center py-6">Cargando medicamentos...</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+          <span class="text-[11px] text-gray-400 italic">Historial médico ordenado cronológicamente</span>
+          <button onclick="cerrarHistorialModal()" class="px-4 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="js/reveal.js"></script>
     <script src="js/especialidades.js"></script>
   </body>

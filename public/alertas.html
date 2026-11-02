@@ -22,8 +22,8 @@
       <!--barra lateral-->
       <aside class="w-64 flex-shrink-0 bg-emerald-100 border-r border-emerald-300 flex flex-col py-6">
         <div class="px-5 pb-5 mb-4 border-b border-emerald-300">
-          <h1 class="text-xl font-semibold text-base text-emerald-800">Pamela Burgos</h1>
-        </div>
+        <h1 class="text-base font-semibold text-emerald-800">Organizador</h1>
+      </div>
 
         <nav class="flex flex-col gap-1">
           <a href="dashboard.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors">
@@ -62,13 +62,15 @@
       <div class="flex-1 flex flex-col">
 
         <!--barra superior o topbar-->
-        <div class="bg-emerald-100 border-b border-emerald-300 px-6 py-6 flex items-center justify-between">
+        <div class="bg-emerald-100 border-b border-emerald-300 px-6 py-4 flex items-center justify-between">
           <div>
-            <h2 class="text-3xl font-semibold text-emerald-800">
-              Organizador Médico Personal
-            </h2>
-            <!--<span class="text-base text-sky-500">Organizador Médico Personal</span>-->
-          </div>
+          <h2 class="text-xl font-semibold text-emerald-800">
+            Pamela Burgos
+          </h2>
+          <span class="text-base text-[#7A6B8E]">
+            Organizador Médico Personal
+          </span>
+        </div>
           <i class="ti ti-heart text-sky-400 text-xl"></i>
         </div>
 
@@ -85,11 +87,17 @@
             </div>
             
 
-            <div class="flex items-center shrink-0">
-                <div class="reveal bg-white border border-emerald-600 rounded-2xl px-4 py-4 flex items-center gap-3" id="bannerEmail">
+            <div class="flex items-center gap-3 shrink-0 flex-wrap">
+                <button id="btnPermisoPush" onclick="solicitarPermisoNotificacionesPush()"
+                  class="btn-config flex items-center gap-2 text-sm bg-white border border-emerald-600 rounded-2xl px-4 py-3">
+                  <i class="ti ti-bell"></i>
+                  <span>Activar Notificaciones Push</span>
+                </button>
+
+                <div class="reveal bg-white border border-emerald-600 rounded-2xl px-4 py-3 flex items-center gap-3" id="bannerEmail">
                   <i class="ti ti-mail text-emerald-800"></i>
                     <span class="text-sm text-gray-600">
-                      Los recordatorios se enviarán a
+                      Recordatorios a:
                         <strong id="emailMostrado">—</strong>
                     </span>
                   
@@ -301,7 +309,10 @@
         <div id="camposMedicacion">
           <div class="campo-grupo">
             <label class="campo-label">Medicamento</label>
-            <input id="inpNombreMed" type="text" class="campo-input" placeholder="Ej: Ibuprofeno 400mg">
+            <select id="inpSelectMed" class="campo-input mb-2" onchange="alSeleccionarMedicamento()">
+              <option value="">Cargando medicamentos activos…</option>
+            </select>
+            <input id="inpNombreMed" type="text" class="campo-input hidden" placeholder="Nombre del medicamento (ej: Ibuprofeno 400mg)">
           </div>
 
           <div class="campo-grupo">
@@ -331,6 +342,15 @@
           </div>
         </div>
 
+        <div class="campo-grupo">
+          <label class="campo-label">Canal de Recordatorio</label>
+          <select id="inpCanalNotificacion" class="campo-input">
+            <option value="ambos" selected>Email + Notificación Push en Pantalla</option>
+            <option value="push">Solo Notificación Push en Pantalla</option>
+            <option value="email">Solo Correo Electrónico</option>
+          </select>
+        </div>
+
         <div class="flex gap-3 mt-5">
           <button onclick="guardarAlerta()" class="btn-primary flex-1 text-sm">
             <i class="ti ti-device-floppy mr-1"></i>
@@ -346,5 +366,10 @@
 
     <script src="js/reveal.js"></script>
     <script src="js/alertas.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(function(e) { console.warn('SW:', e); });
+      }
+    </script>
   </body>
 </html>

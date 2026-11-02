@@ -62,6 +62,17 @@ function filtrarLista(tipo) {
     renderTabla();
 }
 
+// REQUERIMIENTO: Cuando pasa la fecha que se registró como próxima, pasa a Realizada
+function normalizarEstado(c) {
+    if (c.ESTADO === 'Programada' && c.FECHA && c.HORA) {
+        const fechaHoraTurno = new Date(`${c.FECHA}T${c.HORA}:00`);
+        if (fechaHoraTurno < new Date()) {
+            return 'Realizada';
+        }
+    }
+    return c.ESTADO;
+}
+
 // mapea los botones de la UI (futura/realizada) a los valores reales de ESTADO
 function estadoCoincideConFiltro(estado, filtro) {
     if (filtro === 'todas') return true;
@@ -76,14 +87,20 @@ function infoEstado(estado) {
     return                            { clase: 'cancelada',  etiqueta: 'Cancelada' };
 }
 
+// REQUERIMIENTO: Clasificar los historiales de consulta por mes
 function renderTabla() {
     const tbody = document.getElementById('tablaConsultas');
     const sinResultados = document.getElementById('sinResultados');
     const tituloLista = document.getElementById('tituloLista');
 
+    // Auto-actualizar visualmente consultas vencidas
+    todasLasConsultas.forEach(c => {
+        c.ESTADO = normalizarEstado(c);
+    });
+
     const lista = todasLasConsultas.filter(c => estadoCoincideConFiltro(c.ESTADO, filtroActual));
 
-    const etiquetasTitulo = { todas: 'TODAS', futura: 'PROXIMAS', realizada: 'REALIZADAS' };
+    const etiquetasTitulo = { todas: 'TODAS', futura: 'PRÓXIMAS', realizada: 'REALIZADAS' };
     tituloLista.textContent = etiquetasTitulo[filtroActual] || 'TODAS';
 
     if (lista.length === 0) {
@@ -93,57 +110,92 @@ function renderTabla() {
     }
     sinResultados.classList.add('hidden');
 
-    tbody.innerHTML = lista.map(c => {
-        const { clase, etiqueta } = infoEstado(c.ESTADO);
-        return `
-            <tr class="border-b border-pink-50">
-                <td class="py-2">${c.NOMBRE_ESPECIALIDAD}</td>
-                <td class="py-2">${c.NOMBRE_DOCTOR || '—'}</td>
-                <td class="py-2">${c.LUGAR || '—'}</td>
-                <td class="py-2">${c.FECHA}</td>
-                <td class="py-2">${c.HORA}</td>
-                <td class="py-2">
-                    <span class="badge-estado badge-${clase}">${etiqueta}</span>
+    // Agrupar consultas por Mes y Año (Clasificación mensual)
+    const porMes = {};
+    lista.forEach(c => {
+        const [anio, mesStr] = (c.FECHA || '').split('-');
+        if (!anio || !mesStr) return;
+        const mesIndex = Number(mesStr) - 1;
+        const clave = `${anio}-${mesStr}`;
+        const nombreMes = `${MESES[mesIndex] || mesStr} ${anio}`;
+
+        if (!porMes[clave]) {
+            porMes[clave] = { nombre: nombreMes, items: [] };
+        }
+        porMes[clave].items.push(c);
+    });
+
+    // Ordenar de mes más reciente a más antiguo
+    const clavesOrdenadas = Object.keys(porMes).sort().reverse();
+
+    let html = '';
+    clavesOrdenadas.forEach(clave => {
+        const grupo = porMes[clave];
+        html += `
+            <tr class="bg-pink-100/70 border-y border-pink-200">
+                <td colspan="7" class="py-2.5 px-4 font-semibold text-pink-900 text-xs tracking-wide">
+                    <span class="inline-flex items-center gap-2">
+                        <i class="ti ti-calendar-event text-pink-600"></i>
+                        <span>${grupo.nombre}</span>
+                        <span class="bg-white/80 text-pink-700 text-[10px] px-2 py-0.5 rounded-full border border-pink-200 font-bold">
+                            ${grupo.items.length} ${grupo.items.length === 1 ? 'consulta' : 'consultas'}
+                        </span>
+                    </span>
                 </td>
-                <td class="py-2 text-right">
-                    <button class="btn-accion" onclick="abrirModalEditar(${c.ID_CONSULTA})" title="Editar">
-                        <i class="ti ti-pencil"></i>
-                    </button>
-                    <button class="btn-accion eliminar" onclick="eliminar(${c.ID_CONSULTA})" title="Eliminar">
-                        <i class="ti ti-trash"></i>
-                    </button>
-                </td>
-            </tr>`;
-    }).join('');
+            </tr>
+        `;
+
+        grupo.items.forEach(c => {
+            const { clase, etiqueta } = infoEstado(c.ESTADO);
+            html += `
+                <tr class="border-b border-pink-50 hover:bg-pink-50/50 transition">
+                    <td class="py-3 px-4 font-medium text-gray-800">${c.NOMBRE_ESPECIALIDAD}</td>
+                    <td class="py-3 px-4 text-gray-600">${c.NOMBRE_DOCTOR || '—'}</td>
+                    <td class="py-3 px-4 text-gray-500">${c.LUGAR || '—'}</td>
+                    <td class="py-3 px-4 font-mono text-xs text-gray-700">${c.FECHA}</td>
+                    <td class="py-3 px-4 font-mono text-xs text-gray-700">${c.HORA}</td>
+                    <td class="py-3 px-4">
+                        <span class="badge-estado badge-${clase}">${etiqueta}</span>
+                    </td>
+                    <td class="py-3 px-4 text-right">
+                        <button class="btn-accion" onclick="abrirModalEditar(${c.ID_CONSULTA})" title="Editar">
+                            <i class="ti ti-pencil"></i>
+                        </button>
+                        <button class="btn-accion eliminar" onclick="eliminar(${c.ID_CONSULTA})" title="Eliminar">
+                            <i class="ti ti-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
+        });
+    });
+
+    tbody.innerHTML = html;
 }
 
 //---CALENDARIOS (mes pasado, mes actual y mes siguiente)---
 function renderCalendarios() {
-    //busca el contenedor y la fecha actual (guarda el dia exacto, mes y año en tiempo real)
     const grid = document.getElementById('calendariosGrid');
     const hoy  = new Date();
 
-    // mapa fecha (YYYY-MM-DD) -> { futura, realizada, cancelada }
     const porFecha = {};
-    todasLasConsultas.forEach(c => {//agrupa y procesa las citas
+    todasLasConsultas.forEach(c => {
+        c.ESTADO = normalizarEstado(c);
         if (!porFecha[c.FECHA]) porFecha[c.FECHA] = { futura: 0, realizada: 0, cancelada: 0 };
         const { clase } = infoEstado(c.ESTADO);
         porFecha[c.FECHA][clase]++;
     });
 
-    //calcula los 3 meses a mostrar
     const meses = [-1, 0, 1].map(offset => {
         const d = new Date(hoy.getFullYear(), hoy.getMonth() + offset, 1);
         return { anio: d.getFullYear(), mes: d.getMonth() };
     });
 
-    grid.innerHTML = meses.map(({ anio, mes }) => construirCalendarioMes(anio, mes, porFecha, hoy)).join('');//dibuja e inserta los meses en el calendario
+    grid.innerHTML = meses.map(({ anio, mes }) => construirCalendarioMes(anio, mes, porFecha, hoy)).join('');
 }
 
 function construirCalendarioMes(anio, mes, porFecha, hoy) {
     const primerDia   = new Date(anio, mes, 1);
     const diasEnMes    = new Date(anio, mes + 1, 0).getDate();
-    // getDay(): 0=domingo..6=sabado → lo paso a semana que arranca en lunes
     const offsetInicio = (primerDia.getDay() + 6) % 7;
 
     let celdas = '';
@@ -172,7 +224,6 @@ function construirCalendarioMes(anio, mes, porFecha, hoy) {
         }
         if (esHoy) clases.push('hoy');
 
-        //onclick cambie para poder lanzar el formulario cuando el usuario da click en una fecha
         celdas += `<div class="${clases.join(' ')}" ${dataCount ? `data-count="${dataCount}"` : ''} onclick="abrirModal('${fechaStr}')" style="cursor: pointer;">${dia}</div>`;
     }
 
@@ -190,8 +241,7 @@ function abrirModal(fecha = null) {
     document.getElementById('modalTitulo').textContent = 'Nueva Consulta';
     limpiarCampos();
 
-    //si hizo click en un dia del calendario le asigna la fecha automaticamente (al tocar la fecha ya le sale el formulario muajajajaja)
-    if(fecha){
+    if (fecha) {
         document.getElementById('inpFecha').value = fecha;
     }
     document.getElementById('modal').style.display = 'flex';
@@ -290,5 +340,3 @@ async function eliminar(id) {
         console.error('Error al eliminar:', err);
     }
 }
-
-

@@ -17,40 +17,38 @@ async function cargarDashboard() {
         }
 
         const data = await res.json();
-
         console.log('Datos recibidos del dashboard:', data);
 
-        asignarTexto('cantEspecialidades', data.especialidades);
-        asignarTexto('cantConsultas', data.consultas);
-        asignarTexto('cantDocumentos', data.documentos);
-        asignarTexto('cantMedicamentos', data.medicamentos);
-        asignarTexto('cantAlertas', data.alertas);
+        asignarTexto('cantEspecialidades', data.especialidades ?? data.ESPECIALIDADES ?? 0);
+        asignarTexto('cantConsultas', data.consultas ?? data.CONSULTAS ?? 0);
+        asignarTexto('cantDocumentos', data.documentos ?? data.DOCUMENTOS ?? 0);
+        asignarTexto('cantMedicamentos', data.medicamentos ?? data.MEDICAMENTOS ?? 0);
+        asignarTexto('cantAlertas', data.alertas ?? data.ALERTAS ?? 0);
 
-        // Solo si posteriormente creamos la tabla/sección "otros"
-        asignarTexto('cantOtros', data.otros);
+        asignarTexto('cantOtros', data.otros ?? 0);
 
         renderizarLista(
             'listaProximas',
-            data.lista_proximas,
+            data.lista_proximas || [],
             c =>
-                `${c.ESPECIALIDAD}${c.NOMBRE_DOCTOR ? ' · ' + c.NOMBRE_DOCTOR : ''} — ${c.FECHA_DISPLAY} ${c.HORA}`
+                `${c.ESPECIALIDAD || c.especialidad}${c.NOMBRE_DOCTOR ? ' · ' + c.NOMBRE_DOCTOR : ''} — ${c.FECHA_DISPLAY || c.fecha_display} ${c.HORA || c.hora}`
         );
 
         renderizarLista(
             'listaProximasAlertas',
-            data.proximas_alertas,
+            data.proximas_alertas || [],
             a => {
                 let tituloAlerta = '';
 
-                if (a.NOMBRE_MED) {
-                    tituloAlerta = `Medicamento: ${a.NOMBRE_MED}`;
-                } else if (a.NOMBRE_ESP) {
-                    tituloAlerta = `Cita de ${a.NOMBRE_ESP}`;
+                if (a.NOMBRE_MED || a.nombre_med) {
+                    tituloAlerta = `Medicamento: ${a.NOMBRE_MED || a.nombre_med}`;
+                } else if (a.NOMBRE_ESP || a.nombre_esp) {
+                    tituloAlerta = `Cita de ${a.NOMBRE_ESP || a.nombre_esp}`;
                 } else {
-                    tituloAlerta = a.DESCRIPCION || a.TIPO;
+                    tituloAlerta = a.DESCRIPCION || a.descripcion || a.TIPO || a.tipo || 'Alerta';
                 }
 
-                return `${tituloAlerta} — Próximo envío: ${a.FECHA_DISPLAY}`;
+                return `${tituloAlerta} — Próximo aviso: ${a.FECHA_DISPLAY || a.fecha_display || 'Programado'}`;
             }
         );
 
@@ -61,7 +59,6 @@ async function cargarDashboard() {
 
 function asignarTexto(id, valor) {
     const el = document.getElementById(id);
-
     if (el) {
         el.textContent = valor ?? 0;
     } else {
@@ -71,17 +68,13 @@ function asignarTexto(id, valor) {
 
 function renderizarLista(id, items, formatear) {
     const lista = document.getElementById(id);
-
-    if (!lista) {
-        console.warn(`No se encontró la lista: ${id}`);
-        return;
-    }
+    if (!lista) return;
 
     lista.innerHTML = '';
 
     if (!items || items.length === 0) {
         const li = document.createElement('li');
-        li.className = 'text-gray-400';
+        li.className = 'text-gray-400 text-xs py-2';
         li.textContent = 'No hay registros próximos.';
         lista.appendChild(li);
         return;
@@ -89,12 +82,8 @@ function renderizarLista(id, items, formatear) {
 
     items.forEach(item => {
         const li = document.createElement('li');
-
-        li.className =
-            'border-b border-pink-100 pb-2 last:border-b-0';
-
+        li.className = 'border-b border-pink-100 pb-2 last:border-b-0 text-xs text-gray-700';
         li.textContent = formatear(item);
-
         lista.appendChild(li);
     });
 }

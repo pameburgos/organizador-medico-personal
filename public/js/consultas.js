@@ -125,6 +125,7 @@ function renderTabla() {
         porMes[clave].items.push(c);
     });
 
+    //--historial
     // Ordenar de mes más reciente a más antiguo
     const clavesOrdenadas = Object.keys(porMes).sort().reverse();
 
@@ -133,11 +134,11 @@ function renderTabla() {
         const grupo = porMes[clave];
         html += `
             <tr class="bg-pink-100/70 border-y border-pink-200">
-                <td colspan="7" class="py-2.5 px-4 font-semibold text-pink-900 text-xs tracking-wide">
+                <td colspan="7" class="py-2.5 px-4 font-semibold text-pink-900 text-base tracking-wide">
                     <span class="inline-flex items-center gap-2">
                         <i class="ti ti-calendar-event text-pink-600"></i>
                         <span>${grupo.nombre}</span>
-                        <span class="bg-white/80 text-pink-700 text-[10px] px-2 py-0.5 rounded-full border border-pink-200 font-bold">
+                        <span class="bg-white/80 text-gray-700 text-[10px] px-2 py-0.5 rounded-full border border-pink-200 font-bold">
                             ${grupo.items.length} ${grupo.items.length === 1 ? 'consulta' : 'consultas'}
                         </span>
                     </span>
@@ -260,7 +261,6 @@ async function abrirModalEditar(id) {
         document.getElementById('inpFecha').value      = c.FECHA;
         document.getElementById('inpHora').value       = c.HORA;
         document.getElementById('inpMotivo').value     = c.MOTIVO || '';
-        document.getElementById('inpNotasPost').value  = c.NOTAS_POST || '';
         document.getElementById('inpEstado').value     = c.ESTADO;
     } catch (err) {
         console.error('Error al cargar la consulta:', err);
@@ -280,7 +280,6 @@ function limpiarCampos() {
     document.getElementById('inpHora').value           = '';
     document.getElementById('inpLugar').value          = '';
     document.getElementById('inpMotivo').value         = '';
-    document.getElementById('inpNotasPost').value      = '';
     document.getElementById('inpEstado').value         = 'Programada';
 }
 
@@ -291,7 +290,6 @@ async function guardarConsulta() {
     const hora              = document.getElementById('inpHora').value;
     const lugar              = document.getElementById('inpLugar').value.trim();
     const motivo            = document.getElementById('inpMotivo').value.trim();
-    const notas_post        = document.getElementById('inpNotasPost').value.trim();
     const estado            = document.getElementById('inpEstado').value;
 
     if (!id_especialidad || !fecha || !hora) {
@@ -299,7 +297,7 @@ async function guardarConsulta() {
         return;
     }
 
-    const body = { id_especialidad, fecha, hora, lugar, motivo, notas_post, estado };
+    const body = { id_especialidad, fecha, hora, lugar, motivo, estado };
 
     try {
         const url    = editandoId ? `${API}/${editandoId}` : API;

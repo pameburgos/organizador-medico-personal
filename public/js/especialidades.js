@@ -98,23 +98,23 @@ function renderizarTarjetas(lista){
                  class="p-5 rounded-2xl border-2 shadow-sm flex flex-col justify-between gap-4 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all group">
                 <div>
                     <div class="flex justify-between items-start">
-                        <h4 class="font-bold text-base group-hover:underline" style="color: ${color.titulo};">${esp.NOMBRE}</h4>
+                        <h4 class="font-bold text-xl group-hover:underline" style="color: ${color.titulo};">${esp.NOMBRE}</h4>
                         <span class="px-2 py-0.5 text-[10px] font-medium rounded-full border ${colorEstado}">${textoEstado}</span>
                     </div>
-                    <p class="text-sm text-gray-700 font-medium mt-2 flex items-center gap-1.5">
+                    <p class="text-base text-gray-700 font-medium mt-2 flex items-center gap-1.5">
                         <i class="ti ti-user-doctor" style="color: ${color.titulo};"></i> Dr/a: ${esp.NOMBRE_DOCTOR}
-                    </p>
-                    <p class="text-xs text-gray-600 mt-1 flex items-center gap-1.5">
+                    </p><br>
+                    <p class="text-base text-gray-600 mt-1 flex items-center gap-1.5">
                         <i class="ti ti-building-hospital" style="color: ${color.titulo}; opacity: 0.7;"></i> Centro: ${esp.CENTRO_MEDICO || 'No especificado'}
                     </p>
                     ${esp.TELEFONO_DOCTOR ? `
-                    <p class="text-xs text-gray-500 mt-1 flex items-center gap-1.5">
+                    <p class="text-base text-gray-500 mt-1 flex items-center gap-1.5">
                         <i class="ti ti-phone text-gray-400"></i> Tel: ${esp.TELEFONO_DOCTOR}
                     </p>` : ''}
-                    ${esp.NOTAS ? `<p class="text-xs text-gray-600 mt-2.5 italic p-2 rounded border-l-2 bg-white/60" style="border-color: ${color.border};">${esp.NOTAS}</p>` : ''}
+                    ${esp.NOTAS ? `<p class="text-xs text-gray-600 mt-2.5 italic p-2 rounded border-l-2 bg-white/60" style="border-color: ${color.border};">${esp.NOTAS}</p>` : ''}<br>
                     
-                    <div class="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-pink-700 bg-white/80 px-2.5 py-1 rounded-lg border border-pink-200/80">
-                        <i class="ti ti-folder-medical text-sm"></i> Ver historial médico completo
+                    <div class="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-green-700 bg-white/80 px-2.5 py-1 rounded-lg border border-green-200/80">
+                        <i class="ti ti-folder-medical text-base"></i> Ver Historial
                     </div>
                 </div>
                 
